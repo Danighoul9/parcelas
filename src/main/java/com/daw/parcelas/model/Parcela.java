@@ -25,7 +25,7 @@ public class Parcela {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "tipo_cultivo")
-    private TipoCultivo tipo;
+    private TipoCultivo tipoCultivo;
 
 
 
