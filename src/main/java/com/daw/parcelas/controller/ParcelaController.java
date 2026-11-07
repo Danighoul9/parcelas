@@ -25,6 +25,8 @@ public class ParcelaController {
     public String listar(Model model) {
         //Obtenemos todas las parcelas con ayuda del metodo .listarTodas() del servicio
         model.addAttribute("parcelas", parcelaService.listarTodas());
+        //Añadimos lo de superficie total al metodo para pasarselo a la vista, esto es el EXTRA 1
+        model.addAttribute("superficieTotal", parcelaService.calcularSuperficieTotal());
         return "parcelas/lista"; // → templates/parcelas/lista.html
     }
 

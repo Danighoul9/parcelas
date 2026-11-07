@@ -35,6 +35,17 @@
                     </a>
                 </div>
             </div>
+
+            <!-- bg-warning da un fondo amarillo anaranjado, rounded-3 redondea las esquinas,
+                 p-3 añade espacio interior y shadow-sm incorpora una sombra suave -->
+            <!-- mt-3 separa el aviso del título y el color negro mejora la lectura -->
+            <p class="d-inline-block bg-warning text-dark rounded-3 p-3 text-dark shadow-sm mt-3"
+               style="color: #000000;">
+                Superficie total:
+                <strong>
+                    <span th:text="${superficieTotal}"></span> ha
+                </strong>
+            </p>
         </div>
 
         <!-- Hemos separado la tabla de nombre, ubicación etc de la de las parcelas para que quedase un poco mas visual -->
@@ -78,7 +89,9 @@
                     <!--Hemos cambiado esta parte para que no tenga decoracion el texto y salga en negrita de ahi el bold -->
                 </td>
                 <td th:text="${parcela.getUbicacion()}"></td>
-                <td th:text="${parcela.getSuperficie()}"></td>
+                <td>
+                    <span th:text="${parcela.getSuperficie()}"></span> ha
+                </td>
                 <td> <span class="badge bg-success text-white" th:text="${parcela.getTipoCultivo()}"> </span> </td>
                     <!-- Hemos añadido un badge para que el tipo de cultivo salga en un recuadro verde y con letras blancas -->
                 <td>

@@ -9,4 +9,6 @@ public interface ParcelaService {
     Parcela buscarPorId(Long id);
     Parcela guardar(Parcela parcela);
     void eliminar(Long id);
+    // EXTRA 1: Calcula la superficie total de todas las parcelas
+    double calcularSuperficieTotal();
 }

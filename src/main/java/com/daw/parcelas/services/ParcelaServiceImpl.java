@@ -43,4 +43,13 @@ public class ParcelaServiceImpl implements ParcelaService {
         ParcelaRepository.deleteById(id);
 
     }
+
+    // EXTRA 1: Calcula la superficie total de todas las parcelas
+    @Override
+    public double calcularSuperficieTotal() {
+        return ParcelaRepository.findAll()
+                                .stream()
+                                .mapToDouble(Parcela::getSuperficie)
+                                .sum();
+    }
 }
