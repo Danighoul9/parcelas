@@ -6,7 +6,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-B/GM4XqrwHnWXNOWMbloTmrYXZg10cakYGmpfsR/bbzQ6JAJI4ihuyADKLnBgrCe" crossorigin="anonymous">
     <title>Document</title>
 </head>
-<body>
+<body class="bg-subtle-accent"> <!-- Le ponemos el mismo fondo morado de la pagina principal -->
 
 <div class="container mt-3">
     <div class="d-flex flex-wrap align-items-center justify-content-center lg:justify-content-start">
@@ -24,25 +24,29 @@
 
 <div class="container mt-3">
 
-    <form style="max-width: 400px;" class="mx-auto p-3 border rounded"
-          th:action="@{/parcelas}" th:object="${parcela}" th:method="post"
-    >
-        <h4>Nueva Parcela:</h4>
+    <!-- Le ponemos un fondo grisaceo al formulario. -->
+    <form style="max-width: 500px; background-color: #808080;"
+          class="mx-auto p-4 border rounded"
+          th:action="@{/parcelas}" th:object="${parcela}" th:method="post">
+        <!-- Ponemos el texto H2 en negro. -->
+        <h2 class="bg-success-subtle mb-4 p-2 rounded fw-bold"
+            style="color:black;">Nueva parcela</h2>
         <div class="mb-3 mt-6">
             <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="nombre" th:field="*{nombre}" required>
+            <!-- Hemos añadido form-control-lg para que el input sea mas grande y se vea mejor en todos -->
+            <input type="text" class="form-control form-control-lg" id="nombre" th:field="*{nombre}" required>
         </div>
         <div class="mb-3">
             <label for="ubicacion" class="form-label">Ubicación</label>
-            <input type="text" class="form-control" id="ubicacion" th:field="*{ubicacion}" required>
+            <input type="text" class="form-control form-control-lg" id="ubicacion" th:field="*{ubicacion}" required>
         </div>
         <div class="mb-3">
             <label for="superficie" class="form-label">Superficie</label>
-            <input type="text" class="form-control" id="superficie" th:field="*{superficie}" required>
+            <input type="text" class="form-control form-control-lg" id="superficie" th:field="*{superficie}" required>
         </div>
         <div class="mb-3">
             <label for="tipoCultivo" class="form-label">Tipo de cultivo</label>
-            <select class="form-control" id="tipoCultivo" th:field="*{tipoCultivo}">
+            <select class="form-control form-control-lg" id="tipoCultivo" th:field="*{tipoCultivo}">
                 <option value="OLIVAR" selected>Olivar</option>
                 <option value="ALMENDRO">Almendro</option>
                 <option value="VINEDO">Viñedo</option>
@@ -54,7 +58,9 @@
             </select>
         </div>
 
-        <button type="submit" class="btn-solid theme-primary">Guardar</button>
+        <button type="submit" class="btn-subtle theme-success mt-5">Guardar parcela</button>
+        <!-- Añadimos botón de volver atrás para más comodidad -->
+        <a th:href="@{/parcelas}" class="btn-subtle theme-danger mt-5">Volver atrás</a>
     </form>
 
 </div>
