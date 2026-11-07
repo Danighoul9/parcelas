@@ -13,14 +13,11 @@
             <ul class="nav col-12 lg:col-auto lg:me-auto mb-2 justify-content-center md:mb-0">
                 <li><a th:href="@{/parcelas}" class="nav-link px-2 theme-secondary">Parcelas</a></li>
             </ul>
-            <!-- Buscador para las parcelas (no funciona) -->
-            <form class="col-12 lg:col-auto mb-3 lg:mb-0 lg:me-3" role="search"
-                  th:action="@{/parcelas}" method="get">
-                <input type="search" name="cultivo" class="form-control"
-                       placeholder="Tipo de cultivo..." aria-label="Tipo de cultivo">
+            <form class="col-12 lg:col-auto mb-3 lg:mb-0 lg:me-3" role="search">
+                <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
             </form>
             <div class="text-end">
-                <button type="submit" class="btn btn-outline theme-secondary">Buscar</button>
+                <button type="button" class="btn btn-outline theme-secondary">Search</button>
             </div>
         </div>
     </div>
