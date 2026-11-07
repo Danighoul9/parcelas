@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-B/GM4XqrwHnWXNOWMbloTmrYXZg10cakYGmpfsR/bbzQ6JAJI4ihuyADKLnBgrCe" crossorigin="anonymous">
 </head>
-<body>
+<body class="bg-subtle-accent"> <!-- Hemos añadido una clase para cambiar el color del fondo a un morado suave -->
     <div class="container mt-3">
         <div class="d-flex flex-wrap align-items-center justify-content-center lg:justify-content-start">
             <ul class="nav col-12 lg:col-auto lg:me-auto mb-2 justify-content-center md:mb-0">
@@ -24,9 +24,9 @@
 
     <div class="container mt-3">
 
-        <div class="container mt-3">
+        <div class="container py-4"> <!-- Hemos añadido (py-4) que añade espacio arriba y abajo -->
             <div class="d-flex align-items-center gap-5 mb-3">
-                <h3 class="mb-0">Parcelas</h3>
+                <h1 class="mb-0">Parcelas</h1>
                 <div class="sensor">
                     <a th:href="@{/parcelas/nueva}" type="button" class="btn-solid theme-success" aria-label="Confirm">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
@@ -37,34 +37,62 @@
             </div>
         </div>
 
-        <table class="table table-striped">
-            <thead>
+        <!-- Hemos separado la tabla de nombre, ubicación etc de la de las parcelas para que quedase un poco mas visual -->
+        <table class="table table-hover align-middle mb-3"
+               style="table-layout: fixed;">
+            <!-- Hemos puesto el width tanto en esta tabla como en al de als parcelas para que no se descuadrasen
+                 los nombres y la información-->
+            <colgroup>
+                <col style="width: 23%;">
+                <col style="width: 23%;">
+                <col style="width: 23%;">
+                <col style="width: 17%;">
+                <col style="width: 14%;">
+            </colgroup>
+            <thead class="table-success">
             <tr>
                 <th>Nombre</th>
                 <th>Ubicación</th>
                 <th>Superficie</th>
                 <th>Tipo</th>
+                <th>Acciones</th>
             </tr>
             </thead>
+        </table>
+
+        <table class="table table-hover align-middle"
+               style="table-layout: fixed;">
+            <!-- Los mismos width que en la tabla superior para que coindidan los huecos y no se descuadre -->
+            <colgroup>
+                <col style="width: 23%;">
+                <col style="width: 23%;">
+                <col style="width: 23%;">
+                <col style="width: 17%;">
+                <col style="width: 14%;">
+            </colgroup>
             <tbody>
             <tr th:each="parcela : ${parcelas}">
-                <td><a th:href="@{/parcelas/{id}(id=${parcela.getId()})}"  th:text="${parcela.getNombre()}"></a></td>
+                <td> <a th:href="@{/parcelas/{id}(id=${parcela.getId()})}"
+                        th:text="${parcela.getNombre()}"
+                        class="text-success fw-bold text-decoration-none"> </a>
+                    <!--Hemos cambiado esta parte para que no tenga decoracion el texto y salga en negrita de ahi el bold -->
+                </td>
                 <td th:text="${parcela.getUbicacion()}"></td>
                 <td th:text="${parcela.getSuperficie()}"></td>
-                <td th:text="${parcela.getTipoCultivo()}"></td>
+                <td> <span class="badge bg-success text-white" th:text="${parcela.getTipoCultivo()}"> </span> </td>
+                    <!-- Hemos añadido un badge para que el tipo de cultivo salga en un recuadro verde y con letras blancas -->
                 <td>
                     <!-- Formulario POST de eliminación con confirmación -->
                     <form th:action="@{/parcelas/eliminar/{id}(id=${parcela.id})}" method="post"
                           onsubmit="return confirm('¿Seguro que quieres eliminar esta parcela?');" style="display:inline;">
                         <button type="submit" class="btn btn-danger btn-sm" style="color: red">
+                            <!-- Aqui hemos optado por solo poner el iconito de papelera en rojo -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
                                 <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
                             </svg>
                         </button>
                     </form>
                 </td>
-
-
             </tr>
             </tbody>
         </table>
