@@ -61,4 +61,12 @@ public class ParcelaController {
 
 
     }
+
+    // EXTRA 2: Filtrar parcelas por tipo de cultivo
+    @GetMapping("/cultivo/{tipo}")
+    public String filtrarPorCultivo(@PathVariable com.daw.parcelas.model.TipoCultivo tipo, Model model) {
+        model.addAttribute("parcelas", parcelaService.filtrarPorCultivo(tipo));
+        return "parcelas/lista"; // → templates/parcelas/lista.html
+    }
+
 }

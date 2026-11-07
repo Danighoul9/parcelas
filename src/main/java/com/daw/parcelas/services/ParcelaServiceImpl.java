@@ -1,6 +1,7 @@
 package com.daw.parcelas.services;
 
 import com.daw.parcelas.model.Parcela;
+import com.daw.parcelas.model.TipoCultivo;
 import com.daw.parcelas.repository.ParcelaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -51,5 +52,12 @@ public class ParcelaServiceImpl implements ParcelaService {
                                 .stream()
                                 .mapToDouble(Parcela::getSuperficie)
                                 .sum();
+    }
+
+    //EXTRA 2: Filtrar parcelas por tipo de cultivo
+    @Override
+    public List<Parcela> filtrarPorCultivo(TipoCultivo tipo) {
+        // Devolvemos solo las parcelas que coinciden con el tipo buscado.
+        return ParcelaRepository.findByTipoCultivo(tipo);
     }
 }
