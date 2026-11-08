@@ -14,4 +14,6 @@ public interface ParcelaService {
     double calcularSuperficieTotal();
     //EXTRA 2: Filtrar parcelas por tipo de cultivo
     List<Parcela> filtrarPorCultivo(TipoCultivo tipo);
+    //EXTRA 3: Listar parcelas ordenadas por nombre
+    List<Parcela> listarOrdenadas();
 }
