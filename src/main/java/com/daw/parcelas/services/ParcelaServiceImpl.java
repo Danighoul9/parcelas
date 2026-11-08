@@ -60,4 +60,10 @@ public class ParcelaServiceImpl implements ParcelaService {
         // Devolvemos solo las parcelas que coinciden con el tipo buscado.
         return ParcelaRepository.findByTipoCultivo(tipo);
     }
+
+    //EXTRA 3: Listar parcelas ordenadas por nombre
+    @Override
+    public List<Parcela> listarOrdenadas() {
+        return ParcelaRepository.findAllByOrderByNombreAsc();
+    }
 }

@@ -24,7 +24,10 @@ public class ParcelaController {
     @GetMapping
     public String listar(Model model) {
         //Obtenemos todas las parcelas con ayuda del metodo .listarTodas() del servicio
-        model.addAttribute("parcelas", parcelaService.listarTodas());
+        // model.addAttribute("parcelas", parcelaService.listarTodas());
+
+        //ACTUALIZACIÓN: Ahora se listan las parcelas ordenadas por nombre, esto es el EXTRA 3
+        model.addAttribute("parcelas", parcelaService.listarOrdenadas());
         //Añadimos lo de superficie total al metodo para pasarselo a la vista, esto es el EXTRA 1
         model.addAttribute("superficieTotal", parcelaService.calcularSuperficieTotal());
         return "parcelas/lista"; // → templates/parcelas/lista.html
