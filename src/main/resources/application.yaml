@@ -1,16 +1,25 @@
 spring:
   application:
-    name=parcelas
+    name: parcelas
 
   datasource:
-    url: jdbc:mariadb://localhost:3306/ejemplo
+    url: jdbc:mariadb://localhost:3306/ejemplo #El puerto cambia dependiendo donde tengas la base de datos alojada
     username: usuario
     password: usuario
 
+  # Esto de sql.init.mode:always es para que la base de datos lea siempre el archivo sql
+  # una vez ya esten insertados los datos lo ponemos en never
+  #sql:
+   # init:
+    #  mode: never
+  #Lo comentamos porque primero tiene que crearse la base de datos y luego ya se puede inicializar con los datos,
+  #entonces seguiriamos las instrucciones de arriba.
+
   jpa:
     hibernate:
-       ddl-auto: update
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
        format_sql: true
+

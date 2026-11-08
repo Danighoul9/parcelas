@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Parcelas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-B/GM4XqrwHnWXNOWMbloTmrYXZg10cakYGmpfsR/bbzQ6JAJI4ihuyADKLnBgrCe" crossorigin="anonymous">
+</head>
+<body class="bg-subtle-accent"> <!-- Hemos añadido una clase para cambiar el color del fondo a un morado suave -->
+    <div class="container mt-3">
+        <div class="d-flex flex-wrap align-items-center justify-content-center lg:justify-content-start">
+            <ul class="nav col-12 lg:col-auto lg:me-auto mb-2 justify-content-center md:mb-0">
+                <li><a th:href="@{/parcelas}" class="nav-link px-2 theme-secondary">Parcelas</a></li>
+            </ul>
+            <form class="col-12 lg:col-auto mb-3 lg:mb-0 lg:me-3" role="search">
+                <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+            </form>
+            <div class="text-end">
+                <button type="button" class="btn btn-outline theme-secondary">Search</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-3">
+
+        <div class="container py-4"> <!-- Hemos añadido (py-4) que añade espacio arriba y abajo -->
+            <div class="d-flex align-items-center gap-5 mb-3">
+                <h1 class="mb-0">Parcelas</h1>
+                <div class="parcela">
+                    <a th:href="@{/parcelas/nueva}" type="button" class="btn-solid theme-success" aria-label="Confirm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                        </svg>
+                        Add Parcela
+                    </a>
+                </div>
+            </div>
+
+
+            <!-- Se añade superficie total al html con bootstrap -->
+            <p class="d-inline-block bg-warning text-dark rounded-3 p-3 text-dark mt-3"
+               style="color: #000000;">
+                Superficie total:
+                <strong>
+                    <span th:text="${superficieTotal}"></span> ha
+                </strong>
+            </p>
+        </div>
+
+        <!-- Hemos separado la tabla de nombre, ubicación etc de la de las parcelas para que quedase un poco mas visual -->
+        <table class="table table-hover align-middle mb-3"
+               style="table-layout: fixed;">
+            <!-- Hemos puesto el width tanto en esta tabla como en al de als parcelas para que no se descuadrasen
+                 los nombres y la información-->
+            <colgroup>
+                <col style="width: 23%;">
+                <col style="width: 23%;">
+                <col style="width: 23%;">
+                <col style="width: 17%;">
+                <col style="width: 14%;">
+            </colgroup>
+            <thead class="table-success">
+            <tr>
+                <th>Nombre</th>
+                <th>Ubicación</th>
+                <th>Superficie</th>
+                <th>Tipo</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+        </table>
+
+        <table class="table table-hover align-middle"
+               style="table-layout: fixed;">
+            <!-- Los mismos width que en la tabla superior para que coindidan los huecos y no se descuadre -->
+            <colgroup>
+                <col style="width: 23%;">
+                <col style="width: 23%;">
+                <col style="width: 23%;">
+                <col style="width: 17%;">
+                <col style="width: 14%;">
+            </colgroup>
+            <tbody>
+            <tr th:each="parcela : ${parcelas}">
+                <td> <a th:href="@{/parcelas/{id}(id=${parcela.getId()})}"
+                        th:text="${parcela.getNombre()}"
+                        class="text-success fw-bold text-decoration-none"> </a>
+                    <!--Hemos cambiado esta parte para que no tenga decoracion el texto y salga en negrita de ahi el bold -->
+                </td>
+                <td th:text="${parcela.getUbicacion()}"></td>
+                <td>
+                    <span th:text="${parcela.getSuperficie()}"></span> ha
+                </td>
+                <td> <span class="badge bg-success text-white" th:text="${parcela.getTipoCultivo()}"> </span> </td>
+                    <!-- Hemos añadido un badge para que el tipo de cultivo salga en un recuadro verde y con letras blancas -->
+                <td>
+
+                    <a th:href="@{/parcelas/{id}/editar(id=${parcela.id})}">
+                        <button class="btn btn-warning btn-sm" style="color: yellow">
+                            <!-- Hemos puesto un lapiz en color amarillo -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                 fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M12.854.146a.5.5 0 0 1 .707 0l2.293 2.293a.5.5 0 0 1 0 .707l-9.5
+                                9.5a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232zM11.207 2.5
+                                13.5 4.793 14.5 3.793 12.207 1.5zm1.586 3L10.5 3.207 3.354 10.354l-.5 2 2-.5z"/>
+                            </svg>
+                        </button>
+                    </a>
+
+                    <!-- Formulario POST de eliminación con confirmación -->
+                    <form th:action="@{/parcelas/eliminar/{id}(id=${parcela.id})}" method="post"
+                          onsubmit="return confirm('¿Seguro que quieres eliminar esta parcela?');" style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm" style="color: red">
+                            <!-- Aqui hemos optado por solo poner el iconito de papelera en rojo -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                            </svg>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script type="module" src="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-1a/pXj49ZQ1aHEmrJ+gMw1otqoVsYwlEnlD8mIfY2TV03r20Y0CN7uqx1tQogjPL"
+            crossorigin="anonymous"></script>
+</body>
+</html>
