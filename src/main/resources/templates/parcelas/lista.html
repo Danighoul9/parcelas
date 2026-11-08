@@ -95,6 +95,19 @@
                 <td> <span class="badge bg-success text-white" th:text="${parcela.getTipoCultivo()}"> </span> </td>
                     <!-- Hemos añadido un badge para que el tipo de cultivo salga en un recuadro verde y con letras blancas -->
                 <td>
+
+                    <a th:href="@{/parcelas/{id}/editar(id=${parcela.id})}">
+                        <button class="btn btn-warning btn-sm" style="color: yellow">
+                            <!-- Hemos puesto un lapiz en color amarillo -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                 fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M12.854.146a.5.5 0 0 1 .707 0l2.293 2.293a.5.5 0 0 1 0 .707l-9.5
+                                9.5a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232zM11.207 2.5
+                                13.5 4.793 14.5 3.793 12.207 1.5zm1.586 3L10.5 3.207 3.354 10.354l-.5 2 2-.5z"/>
+                            </svg>
+                        </button>
+                    </a>
+
                     <!-- Formulario POST de eliminación con confirmación -->
                     <form th:action="@{/parcelas/eliminar/{id}(id=${parcela.id})}" method="post"
                           onsubmit="return confirm('¿Seguro que quieres eliminar esta parcela?');" style="display:inline;">

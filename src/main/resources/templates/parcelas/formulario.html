@@ -29,6 +29,9 @@
     <form style="max-width: 500px; background-color: #808080;"
           class="mx-auto p-4 border rounded"
           th:action="@{/parcelas}" th:object="${parcela}" th:method="post">
+
+        <!-- Campo oculto proporcionado por el profesor -->
+        <input type="hidden" th:field="*{id}">
         <!-- Ponemos el texto H2 en negro. -->
         <h2 class="bg-success-subtle mb-4 p-2 rounded fw-bold"
             style="color:black;">Nueva parcela</h2>
