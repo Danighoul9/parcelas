@@ -72,4 +72,12 @@ public class ParcelaController {
         return "parcelas/lista"; // → templates/parcelas/lista.html
     }
 
+   //EXTRA 4: Editar parcela
+   @GetMapping("/{id}/editar")
+   public String editar(@PathVariable Long id, Model model) {
+       Parcela parcela = parcelaService.buscarPorId(id);
+       model.addAttribute("parcela", parcela);
+       return "parcelas/formulario";
+   }
+
 }
