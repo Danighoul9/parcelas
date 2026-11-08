@@ -1,10 +1,9 @@
-# Mediateca
+# Práctica Parcela
 Práctica de la UD3: trabajo en pareja con Git sobre parcelas
 ## Autores
 - Personas: 
   - Daniel Díaz Campoy 
   - Mirian Gonzalez Rodríguez
-## Endpoints disponibles
 # Gestión de Parcelas
 
 Aplicación web desarrollada con Spring Boot para gestionar parcelas agrícolas.
