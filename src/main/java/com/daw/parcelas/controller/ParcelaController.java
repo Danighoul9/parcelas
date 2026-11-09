@@ -1,6 +1,7 @@
 package com.daw.parcelas.controller;
 
 import com.daw.parcelas.model.Parcela;
+import com.daw.parcelas.model.TipoCultivo;
 import com.daw.parcelas.services.ParcelaServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,7 +68,7 @@ public class ParcelaController {
 
     // EXTRA 2: Filtrar parcelas por tipo de cultivo
     @GetMapping("/cultivo/{tipo}")
-    public String filtrarPorCultivo(@PathVariable com.daw.parcelas.model.TipoCultivo tipo, Model model) {
+    public String filtrarPorCultivo(@PathVariable TipoCultivo tipo, Model model) {
         model.addAttribute("parcelas", parcelaService.filtrarPorCultivo(tipo));
         return "parcelas/lista"; // → templates/parcelas/lista.html
     }
