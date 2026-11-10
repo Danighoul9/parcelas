@@ -1,74 +1,88 @@
-<!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-B/GM4XqrwHnWXNOWMbloTmrYXZg10cakYGmpfsR/bbzQ6JAJI4ihuyADKLnBgrCe" crossorigin="anonymous">
-    <title>Document</title>
-</head>
-<body class="bg-subtle-accent"> <!-- Le ponemos el mismo fondo morado de la pagina principal -->
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Panel')}"></head>
+<body>
 
-<div class="container mt-3">
-    <div class="d-flex flex-wrap align-items-center justify-content-center lg:justify-content-start">
-        <ul class="nav col-12 lg:col-auto lg:me-auto mb-2 justify-content-center md:mb-0">
-            <li><a th:href="@{/parcelas}" class="nav-link px-2 theme-secondary">Parcelas</a></li>
-        </ul>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
 
-        <form class="col-12 lg:col-auto mb-3 lg:mb-0 lg:me-3" role="search">
-            <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-        </form>
-        <div class="text-end">
-            <button type="button" class="btn btn-outline theme-secondary">Search</button>
+<div class="d-flex">
+    <aside th:replace="~{fragments/layout :: sidebar('dashboard')}"></aside>
+
+    <main class="app-main flex-grow-1 p-3 p-lg-4">
+
+        <div class="page-header d-flex flex-wrap justify-content-between align-items-end gap-2">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb"><li class="breadcrumb-item active">Panel</li></ol>
+                </nav>
+                <h1>Panel general</h1>
+            </div>
+            <span class="text-secondary small">
+        <i class="bi bi-clock me-1"></i>Actualizado:
+        <span th:text="${#temporals.format(#temporals.createNow(), 'dd/MM/yyyy HH:mm')}">09/11/2026 19:40</span>
+      </span>
         </div>
-    </div>
+
+        <div class="row g-3">
+
+            <form style="max-width: 500px;"
+                  class="form-panel mx-auto p-4 border rounded shadow-sm"
+                  th:action="@{/parcelas}" th:object="${parcela}" th:method="post">
+
+                <!-- Campo oculto proporcionado por el profesor -->
+                <input type="hidden" th:field="*{id}">
+
+                <!--YA QUE LO HEMOS DADO HOY 10/11/2026 EN CLASE LO IMPLEMENTAMOS:
+                    Usamos el th:if y el th:unless para mostrar el título correcto -->
+
+                <!-- ¿Cómo funciona?:
+                Si el id de la parcela es null, significa que estamos creando una parcela
+                nueva y mostramos "Nueva parcela". Si el id tiene valor, estamos editando
+                una parcela existente y mostramos "Editar parcela". -->
+
+                <h2 class="form-panel-title mb-4 p-2 rounded fw-bold">
+                    <span th:if="${parcela.id == null}">Nueva parcela</span>
+                    <span th:unless="${parcela.id == null}">Editar parcela</span>
+                </h2>
+
+                <div class="mb-3 mt-6">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <!-- Hemos añadido form-control-lg para que el input sea mas grande y se vea mejor en todos -->
+                    <input type="text" class="form-control form-control-lg" id="nombre" th:field="*{nombre}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="ubicacion" class="form-label">Ubicación</label>
+                    <input type="text" class="form-control form-control-lg" id="ubicacion" th:field="*{ubicacion}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="superficie" class="form-label">Superficie</label>
+                    <input type="text" class="form-control form-control-lg" id="superficie" th:field="*{superficie}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="tipoCultivo" class="form-label">Tipo de cultivo</label>
+                    <select class="form-control form-control-lg" id="tipoCultivo" th:field="*{tipoCultivo}">
+                        <option value="OLIVAR" selected>Olivar</option>
+                        <option value="ALMENDRO">Almendro</option>
+                        <option value="VINEDO">Viñedo</option>
+                        <option value="CITRICOS">Cítricos</option>
+                        <option value="PISTACHO">Pistacho</option>
+                        <option value="LECHUGAS">Lechugas</option>
+                        <option value="TOMATES">Tomates</option>
+                        <option value="PIMIENTOS">Pimientos</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-success mt-4">Guardar parcela</button>
+                <!-- Añadimos botón de volver atrás para más comodidad -->
+                <a th:href="@{/parcelas}" class="btn btn-danger mt-4">Volver atrás</a>
+            </form>
+
+        </div>
+
+        <footer th:replace="~{fragments/layout :: footer}"></footer>
+    </main>
 </div>
 
-<div class="container mt-3">
-
-    <!-- Le ponemos un fondo grisaceo al formulario. -->
-    <form style="max-width: 500px; background-color: #808080;"
-          class="mx-auto p-4 border rounded"
-          th:action="@{/parcelas}" th:object="${parcela}" th:method="post">
-
-        <!-- Campo oculto proporcionado por el profesor -->
-        <input type="hidden" th:field="*{id}">
-        <!-- Ponemos el texto H2 en negro. -->
-        <h2 class="bg-success-subtle mb-4 p-2 rounded fw-bold"
-            style="color:black;">Nueva parcela</h2>
-        <div class="mb-3 mt-6">
-            <label for="nombre" class="form-label">Nombre</label>
-            <!-- Hemos añadido form-control-lg para que el input sea mas grande y se vea mejor en todos -->
-            <input type="text" class="form-control form-control-lg" id="nombre" th:field="*{nombre}" required>
-        </div>
-        <div class="mb-3">
-            <label for="ubicacion" class="form-label">Ubicación</label>
-            <input type="text" class="form-control form-control-lg" id="ubicacion" th:field="*{ubicacion}" required>
-        </div>
-        <div class="mb-3">
-            <label for="superficie" class="form-label">Superficie</label>
-            <input type="text" class="form-control form-control-lg" id="superficie" th:field="*{superficie}" required>
-        </div>
-        <div class="mb-3">
-            <label for="tipoCultivo" class="form-label">Tipo de cultivo</label>
-            <select class="form-control form-control-lg" id="tipoCultivo" th:field="*{tipoCultivo}">
-                <option value="OLIVAR" selected>Olivar</option>
-                <option value="ALMENDRO">Almendro</option>
-                <option value="VINEDO">Viñedo</option>
-                <option value="CITRICOS">Cítricos</option>
-                <option value="PISTACHO">Pistacho</option>
-                <option value="LECHUGAS">Lechugas</option>
-                <option value="TOMATES">Tomates</option>
-                <option value="PIMIENTOS">Pimientos</option>
-            </select>
-        </div>
-
-        <button type="submit" class="btn-subtle theme-success mt-5">Guardar parcela</button>
-        <!-- Añadimos botón de volver atrás para más comodidad -->
-        <a th:href="@{/parcelas}" class="btn-subtle theme-danger mt-5">Volver atrás</a>
-    </form>
-
-</div>
-
-<script type="module" src="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-1a/pXj49ZQ1aHEmrJ+gMw1otqoVsYwlEnlD8mIfY2TV03r20Y0CN7uqx1tQogjPL" crossorigin="anonymous"></script>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 </body>
 </html>
