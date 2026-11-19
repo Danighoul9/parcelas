@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Panel')}"></head>
+<body>
+
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<div class="d-flex">
+    <aside th:replace="~{fragments/layout :: sidebar('sensores')}"></aside>
+
+    <main class="app-main flex-grow-1 p-3 p-lg-4">
+
+        <div class="row g-3">
+            <form style="max-width: 500px;"
+                  class="form-panel mx-auto p-4 border rounded shadow-sm"
+                  th:action="@{/sensors}" th:object="${sensor}" th:method="post">
+                <input type="hidden" th:field="*{id}">
+
+                <h2 class="form-panel-title mb-4 p-2 rounded fw-bold">
+                    <span th:if="${sensor.id == null}">Nuevo sensor</span>
+                    <span th:unless="${sensor.id == null}">Editar sensor</span>
+                </h2>
+
+                <div class="estado-alarma" th:if="${#fields.hasErrors()}">
+                    <p th:each="e : ${#fields.errors()}" th:text="${e}">Error general</p>
+                </div>
+
+                <div class="mb-3 mt-6">
+                    <label for="name" class="form-label">Nombre</label>
+                    <input type="text" class="form-control form-control-lg" id="name" th:field="*{name}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="model" class="form-label">Modelo</label>
+                    <input type="text" class="form-control form-control-lg" id="model" th:field="*{model}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="unidadMedida" class="form-label">Unidad de medida</label>
+                    <input type="text" class="form-control form-control-lg" id="unidadMedida" th:field="*{unidadMedida}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="estado" class="form-label">Estado</label>
+                    <select class="form-control form-control-lg" id="estado" th:field="*{estado}">
+                        <option value="ACTIVO" selected>Activo</option>
+                        <option value="INACTIVO">Inactivo</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="tipo" class="form-label">Tipo</label>
+                    <select class="form-control form-control-lg" id="tipo" th:field="*{tipo}">
+                        <option th:each="t : ${tipos}" th:value="${t}" th:text="${t}"></option>
+                    </select>
+                </div>
+
+                <div class="row g-2">
+                    <div class="md:col">
+                        <div class="mb-3">
+                            <label for="latitud" class="form-label">Latitud</label>
+                            <input type="text" class="form-control form-control-lg" id="latitud" th:field="*{latitud}" required>
+                        </div>
+                    </div>
+                    <div class="md:col">
+                        <div class="mb-3">
+                            <label for="longitud" class="form-label">Longitud</label>
+                            <input type="text" class="form-control form-control-lg" id="longitud" th:field="*{longitud}" required>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-success mt-4">Guardar sensor</button>
+                <a th:href="@{/sensors}" class="btn btn-danger mt-4">Volver atrás</a>
+            </form>
+        </div>
+
+        <footer th:replace="~{fragments/layout :: footer}"></footer>
+    </main>
+</div>
+
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

@@ -70,6 +70,7 @@ public class ParcelaController {
     @GetMapping("/cultivo/{tipo}")
     public String filtrarPorCultivo(@PathVariable TipoCultivo tipo, Model model) {
         model.addAttribute("parcelas", parcelaService.filtrarPorCultivo(tipo));
+        model.addAttribute("superficieTotal", parcelaService.calcularSuperficieTotal());
         return "parcelas/lista"; // → templates/parcelas/lista.html
     }
 

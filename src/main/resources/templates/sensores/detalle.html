@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Panel')}"></head>
+<body>
+
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<div class="d-flex">
+    <aside th:replace="~{fragments/layout :: sidebar('sensores')}"></aside>
+
+    <main class="app-main flex-grow-1 p-3 p-lg-4">
+
+        <div th:replace="~{fragments/layout :: header-main('Detalle del sensor')}"></div>
+
+        <div class="row g-3">
+
+            <div class="container mt-4">
+                <div class="card mt-3" style="max-width: 320px;">
+                    <div class="card-body">
+                        <h4  th:text="${sensor.getName()}" class="card-title"></h4>
+                        <p th:text="${sensor.getModel()}" class="card-subtitle fg-3"></p>
+                        <p class="card-text">
+                            (<span th:text="${sensor.getLatitud()}"></span>,
+                            <span th:text="${sensor.getLongitud()}"></span>)
+                        </p>
+                        <a th:href="@{/sensors}" class="btn-outline theme-primary">Volver atrás</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <footer th:replace="~{fragments/layout :: footer}"></footer>
+    </main>
+</div>
+
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

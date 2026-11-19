@@ -6,22 +6,11 @@
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
 
 <div class="d-flex">
-    <aside th:replace="~{fragments/layout :: sidebar('dashboard')}"></aside>
+    <aside th:replace="~{fragments/layout :: sidebar('parcelas')}"></aside>
 
     <main class="app-main flex-grow-1 p-3 p-lg-4">
 
-        <div class="page-header d-flex flex-wrap justify-content-between align-items-end gap-2">
-            <div>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb"><li class="breadcrumb-item active">Panel</li></ol>
-                </nav>
-                <h1>Panel general</h1>
-            </div>
-            <span class="text-secondary small">
-                <i class="bi bi-clock me-1"></i>Actualizado:
-                <span th:text="${#temporals.format(#temporals.createNow(), 'dd/MM/yyyy HH:mm')}">09/11/2026 19:40</span>
-            </span>
-        </div>
+        <div th:replace="~{fragments/layout :: header-main('Parcelas')}"></div>
 
         <div class="row g-3">
 
@@ -38,13 +27,6 @@
                                 Add Parcela
                             </a>
                         </div>
-                        <!-- Se añade superficie total al html con bootstrap -->
-                        <p class="d-inline-block bg-warning text-dark rounded-3 p-3 mb-0">
-                            Superficie total:
-                            <strong>
-                                <span th:text="${superficieTotal}"></span> ha
-                            </strong>
-                        </p>
                     </div>
                 </div>
 
@@ -108,6 +90,15 @@
                         </td>
                     </tr>
                     </tbody>
+                    <tfoot class="table-success">
+                    <tr>
+                        <td colspan="2" class="text-end fw-bold">Superficie total:</td>
+                        <td class="fw-bold">
+                            <span th:text="${superficieTotal}"></span> ha
+                        </td>
+                        <td colspan="2"></td>
+                    </tr>
+                    </tfoot>
                 </table>
             </div>
 

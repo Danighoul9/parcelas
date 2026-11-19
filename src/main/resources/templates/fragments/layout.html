@@ -95,7 +95,7 @@
 
         <div class="sidebar-heading">Monitorización</div>
         <nav class="nav flex-column">
-            <a class="nav-link" th:classappend="${activo == 'sensores'} ? 'active'" th:href="@{/sensores}" href="#">
+            <a class="nav-link" th:classappend="${activo == 'sensores'} ? 'active'" th:href="@{/sensors}" href="#">
                 <i class="bi bi-broadcast"></i> Sensores
             </a>
             <a class="nav-link" th:classappend="${activo == 'lecturas'} ? 'active'" th:href="@{/lecturas}" href="#">
@@ -106,6 +106,15 @@
     </div>
 </aside>
 
+<!-- ===================== CABECERA DE PÁGINA ===================== -->
+<div th:fragment="header-main(titulo)" class="page-header">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" th:text="${titulo}">Página</li>
+        </ol>
+    </nav>
+    <h1 th:text="${titulo}">Página</h1>
+</div>
 
 <!-- ===================== PIE ===================== -->
 <footer th:fragment="footer" class="app-footer d-flex flex-wrap justify-content-between gap-2">
