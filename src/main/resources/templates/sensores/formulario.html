@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/layout :: head('Panel')}"></head>
+<html lang="es" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Panel')}">
+    <title>Panel | AgroMonitor</title>
+</head>
 <body>
 
-<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<header th:replace="~{fragments/layout :: navbar}"></header>
 
-<div class="d-flex">
+<div class="agro-shell">
     <aside th:replace="~{fragments/layout :: sidebar('sensores')}"></aside>
 
-    <main class="app-main flex-grow-1 p-3 p-lg-4">
+    <main class="agro-main" id="contenido">
+        <div class="agro-contenido">
 
-        <div class="row g-3">
+            <div class="row g-3">
+
             <form style="max-width: 500px;"
                   class="form-panel mx-auto p-4 border rounded shadow-sm"
                   th:action="@{/sensors}" th:object="${sensor}" th:method="post">
@@ -25,7 +29,7 @@
                     <p th:each="e : ${#fields.errors()}" th:text="${e}">Error general</p>
                 </div>
 
-                <div class="mb-3 mt-6">
+                <div class="mb-3">
                     <label for="name" class="form-label">Nombre</label>
                     <input type="text" class="form-control form-control-lg" id="name" th:field="*{name}" required>
                 </div>
@@ -52,13 +56,13 @@
                 </div>
 
                 <div class="row g-2">
-                    <div class="md:col">
+                    <div class="col-md-6">
                         <div class="mb-3">
                             <label for="latitud" class="form-label">Latitud</label>
                             <input type="text" class="form-control form-control-lg" id="latitud" th:field="*{latitud}" required>
                         </div>
                     </div>
-                    <div class="md:col">
+                    <div class="col-md-6">
                         <div class="mb-3">
                             <label for="longitud" class="form-label">Longitud</label>
                             <input type="text" class="form-control form-control-lg" id="longitud" th:field="*{longitud}" required>
@@ -71,6 +75,7 @@
             </form>
         </div>
 
+        </div>
         <footer th:replace="~{fragments/layout :: footer}"></footer>
     </main>
 </div>

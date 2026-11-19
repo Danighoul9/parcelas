@@ -1,206 +1,836 @@
-/* ==========================================================
-   AgroMonitor · estilos base sobre Bootstrap 5.3
-   ========================================================== */
+/* =========================================================
+   AgroTech: hoja de estilos (modo oscuro por defecto)
+   Requiere Bootstrap 5.3 y Bootstrap Icons
+   ========================================================= */
 
+/* ---------- 1. Colores base del proyecto (mínimos) ---------- */
 :root {
-    --app-primary: #2f855a;
-    --app-primary-hover: #276749;
-    --app-primary-soft: #173b2a;
-    --app-bg: #101010;
-    --app-surface: #1c1c1c;
-    --app-surface-soft: #252525;
-    --app-border: #3a3a3a;
-    --app-muted: #a0a0a0;
-    --sidebar-width: 240px;
-    --navbar-height: 56px;
+  --agro-verde: #2e7d32;
+  --agro-verde-oscuro: #1b5e20;
+}
+.agro-navbar { background-color: var(--agro-verde-oscuro); }
+.sidebar .nav-link.active {
+  color: #fff;
+  background-color: var(--agro-verde);
 }
 
+
+/* ---------- 2. Tokens de diseño (tema oscuro) ---------- */
+:root {
+  /* acentos con significado: cada uno indica un estado del campo */
+  --agro-lima: #a5d66a;     /* óptimo */
+  --agro-tierra: #d9a441;   /* seco / aviso */
+  --agro-agua: #52b6e0;     /* encharcado / humedad */
+  --agro-alerta: #e5675b;   /* error */
+  --agro-gris: #6f8478;     /* sin señal */
+
+  /* superficies */
+  --agro-fondo: #070b0f;
+  --agro-superficie: #121c16;
+  --agro-superficie-2: #19271f;
+  --agro-borde: #25372c;
+  --agro-texto: #e7efe9;
+  --agro-texto-suave: #94aa9b;
+
+  /* medidas y tipografía */
+  --agro-navbar-h: 3.5rem;
+  --agro-sidebar-w: 16.5rem;
+  --agro-fuente-titulos: "Bricolage Grotesque", system-ui, sans-serif;
+  --agro-fuente: "DM Sans", system-ui, sans-serif;
+}
+
+/* Tema claro (opcional, se activa con el botón de la navbar) */
+[data-bs-theme="light"] {
+  --agro-lima: #4f8a1f;
+  --agro-tierra: #a9731a;
+  --agro-agua: #1b7fa8;
+  --agro-alerta: #c0392b;
+  --agro-gris: #6b7f73;
+
+  --agro-fondo: #f2f6f1;
+  --agro-superficie: #ffffff;
+  --agro-superficie-2: #e9f1e9;
+  --agro-borde: #d3dfd4;
+  --agro-texto: #14231a;
+  --agro-texto-suave: #587063;
+}
+
+/* Conecta los tokens con las variables de Bootstrap */
+[data-bs-theme="dark"],
+[data-bs-theme="light"] {
+  --bs-body-bg: var(--agro-fondo);
+  --bs-body-color: var(--agro-texto);
+  --bs-body-font-family: var(--agro-fuente);
+  --bs-secondary-color: var(--agro-texto-suave);
+  --bs-border-color: var(--agro-borde);
+  --bs-link-color-rgb: 82, 182, 224;
+}
+
+
+/* ---------- 3. Base ---------- */
 body {
-    background: var(--app-bg);
-    color: #e8e8e8;
+  font-family: var(--agro-fuente);
+  padding-top: var(--agro-navbar-h);
+  background-color: var(--agro-fondo);
+  background-image: radial-gradient(60rem 28rem at 90% -8%, rgba(46, 125, 50, .08), transparent 65%);
+  background-repeat: no-repeat;
+  color: var(--agro-texto);
+}
+h1, h2, h3, h4, h5 {
+  font-family: var(--agro-fuente-titulos);
+  letter-spacing: -.01em;
+}
+.text-secondary { color: var(--agro-texto-suave) !important; }
+
+:focus-visible {
+  outline: 2px solid var(--agro-lima);
+  outline-offset: 2px;
 }
 
-/* ---------- Barra superior ---------- */
-.navbar-app {
-    height: var(--navbar-height);
-    background: var(--app-surface);
-    border-bottom: 1px solid var(--app-border);
-}
-.navbar-app .navbar-brand { color: #e8e8e8; }
-.navbar-app .navbar-brand i { color: var(--app-primary); font-size: 1.3rem; }
 
+/* ---------- 4. Navbar ---------- */
+.agro-navbar {
+  background-color: var(--agro-verde-oscuro);
+}
+
+.agro-navbar {
+  height: var(--agro-navbar-h);
+  min-height: var(--agro-navbar-h);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1040;
+  padding-block: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .25);
+}
+.agro-marca {
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  color: #fff;
+  font-family: var(--agro-fuente-titulos);
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: -.01em;
+  text-decoration: none;
+}
+.agro-marca:hover { color: #fff; }
+.agro-marca-icono {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: .55rem;
+  background: rgba(255, 255, 255, .14);
+}
+.agro-marca-icono svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.btn-nav {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 0;
+  border-radius: .6rem;
+  background: rgba(255, 255, 255, .1);
+  color: #fff;
+  transition: background-color .15s;
+}
+.btn-nav:hover { background: rgba(255, 255, 255, .2); color: #fff; }
+.btn-nav-punto {
+  position: absolute;
+  top: .45rem;
+  right: .5rem;
+  width: .5rem;
+  height: .5rem;
+  border-radius: 50%;
+  background: var(--agro-tierra);
+  box-shadow: 0 0 0 2px var(--agro-verde-oscuro);
+}
+.btn-nav-avatar { background: transparent; }
+.btn-nav-avatar::after { display: none; }
 .avatar {
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    background: var(--app-primary-soft);
-    color: var(--app-primary);
-    display: grid; place-items: center;
-    font-weight: 700; font-size: .85rem;
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  background: #a5d66a;
+  color: #10200f;
+  font-size: .8rem;
+  font-weight: 700;
 }
 
-/* ---------- Menú lateral ---------- */
-.sidebar {
-    --bs-offcanvas-width: var(--sidebar-width);
-    background: var(--app-surface);
+/* en oscuro se muestra el sol (para pasar a claro), en claro la luna */
+[data-bs-theme="dark"] .icono-luna { display: none; }
+[data-bs-theme="light"] .icono-sol { display: none; }
+
+.dropdown-menu {
+  --bs-dropdown-bg: var(--agro-superficie-2);
+  --bs-dropdown-border-color: var(--agro-borde);
+  --bs-dropdown-color: var(--agro-texto);
+  --bs-dropdown-link-color: var(--agro-texto);
+  --bs-dropdown-link-hover-color: #fff;
+  --bs-dropdown-link-hover-bg: var(--agro-verde);
+  --bs-dropdown-divider-bg: var(--agro-borde);
+}
+
+
+/* ---------- 5. Estructura: sidebar + contenido ---------- */
+.agro-shell {
+  display: block;
 }
 @media (min-width: 992px) {
-    .sidebar {
-        width: var(--sidebar-width);
-        flex-shrink: 0;
-        border-right: 1px solid var(--app-border);
-        position: sticky;
-        top: var(--navbar-height);
-        height: calc(100vh - var(--navbar-height));
-        overflow-y: auto;
-    }
+  .agro-shell {
+    display: grid;
+    grid-template-columns: var(--agro-sidebar-w) minmax(0, 1fr);
+  }
 }
-.sidebar-heading {
-    font-size: .7rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: .06em;
-    color: var(--app-muted);
-    padding: 1rem 1.25rem .35rem;
+
+.sidebar {
+  --bs-offcanvas-bg: var(--agro-superficie);
+  --bs-offcanvas-color: var(--agro-texto);
+  --bs-offcanvas-width: var(--agro-sidebar-w);
+  width: var(--agro-sidebar-w);
+  min-width: var(--agro-sidebar-w);
+  max-width: var(--agro-sidebar-w);
+  flex: 0 0 var(--agro-sidebar-w);
+  border-right: 1px solid var(--agro-borde);
 }
+@media (min-width: 992px) {
+  .sidebar {
+    position: sticky;
+    top: var(--agro-navbar-h);
+    height: calc(100vh - var(--agro-navbar-h));
+  }
+}
+.sidebar-inner {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 1rem;
+  height: 100%;
+  padding: 1rem .75rem;
+  background: var(--agro-superficie);
+  overflow-y: auto;
+}
+
 .sidebar .nav-link {
-    display: flex; align-items: center; gap: .65rem;
-    color: #d0d0d0;
-    padding: .5rem 1.25rem;
-    border-left: 3px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .65rem .85rem;
+  border-radius: .6rem;
+  color: var(--agro-texto-suave);
+  font-weight: 500;
+  transition: background-color .15s, color .15s;
 }
-.sidebar .nav-link i { font-size: 1.05rem; }
-.sidebar .nav-link:hover { background: var(--app-surface-soft); color: #fff; }
+.sidebar .nav-link i { width: 1.25rem; font-size: 1.1rem; text-align: center; }
+.sidebar .nav-link:not(.active):hover {
+  color: var(--agro-texto);
+  background-color: var(--agro-superficie-2);
+}
 .sidebar .nav-link.active {
-    color: var(--app-primary);
-    background: var(--app-primary-soft);
-    border-left-color: var(--app-primary);
-    font-weight: 600;
+  color: #fff;
+  background-color: var(--agro-verde);
+  box-shadow: 0 8px 20px -12px rgba(46, 125, 50, .55);
 }
 
-/* ---------- Zona de contenido ---------- */
-.app-main { min-width: 0; }
+.nav-badge {
+  margin-left: auto;
+  min-width: 1.35rem;
+  padding: .05rem .4rem;
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--agro-tierra) 22%, transparent);
+  color: var(--agro-tierra);
+  font-size: .75rem;
+  font-weight: 700;
+  text-align: center;
+}
 
-.page-header { margin-bottom: 1.5rem; }
-.page-header h1 { font-size: 1.5rem; font-weight: 600; margin: 0; }
-.page-header .breadcrumb { font-size: .85rem; margin-bottom: .25rem; }
-.page-header .breadcrumb a { color: var(--app-muted); text-decoration: none; }
+.sidebar-grupo {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  margin: 0 0 .45rem .3rem;
+  color: var(--agro-texto-suave);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+.sidebar-grupo::after { content: ""; flex: 1; height: 1px; background: var(--agro-borde); }
+.sidebar-nav .sidebar-grupo:not(:first-child) { margin-top: 1.2rem; }
+.sidebar-rapidos { margin-top: auto; padding-top: 1rem; }
+.sidebar-rapidos .nav-link { padding: .5rem .85rem; font-size: .9rem; }
+.sidebar-rapidos .nav-link i { color: var(--agro-lima); }
 
-/* ---------- Tarjetas ---------- */
-.card { background: var(--app-surface); border: 1px solid var(--app-border); color: #e8e8e8; }
+.agro-main { min-width: 0; padding: 1.75rem clamp(1rem, 3vw, 2.5rem) 2rem; }
+.agro-contenido { width: 100%; max-width: none; margin-inline: 0; }
+.agro-titulo { margin-bottom: .15rem; font-size: clamp(1.7rem, 2.5vw, 2.1rem); font-weight: 700; }
+.form-panel .form-control,
+.form-panel .form-select {
+  background-color: #fff;
+  border-color: #ced4da;
+  color: #212529;
+}
+.form-panel .form-control:focus,
+.form-panel .form-select:focus {
+  background-color: #fff;
+  border-color: #86b7fe;
+  color: #212529;
+  box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25);
+}
+.app-main {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+}
+.container.mt-3 {
+  max-width: none;
+  padding-inline: 0;
+}
+.parcela-table,
+#resultados {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.agro-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: .5rem;
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--agro-borde);
+  font-size: .8rem;
+}
+
+
+/* ---------- 6. Tarjetas ---------- */
+.agro-card {
+  background: var(--agro-superficie);
+  border: 1px solid var(--agro-borde);
+  border-radius: .9rem;
+  overflow: hidden;
+}
+.agro-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--agro-borde);
+}
+.agro-card-head h2 { margin: 0; font-size: 1.05rem; font-weight: 700; }
+.agro-card-body { padding: 1.25rem; }
+
+.error-aviso {
+  max-width: 520px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--agro-tierra) 58%, var(--agro-borde));
+  border-radius: .75rem;
+  background: #fff6cf;
+  color: #4a3a12;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, .12);
+}
+.error-aviso-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .75rem 1rem;
+  border-bottom: 1px solid rgba(169, 115, 26, .28);
+  background: #f3df91;
+}
+.error-aviso-codigo {
+  font-family: var(--agro-fuente-titulos);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #6b5012;
+}
+.error-aviso-icono {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(169, 115, 26, .16);
+  color: #8a6418;
+}
+.error-aviso-cuerpo {
+  padding: 1.25rem;
+}
+.error-aviso-cuerpo h1 {
+  margin: 0 0 .35rem;
+  font-size: 1.25rem;
+  color: #5c4615;
+}
+.error-aviso-cuerpo p {
+  margin: 0 0 1.1rem;
+  color: #79632d;
+}
+.error-volver {
+  border: 1px solid #c9a54d;
+  background: #d9ad32;
+  color: #33270b;
+  font-weight: 700;
+}
+.error-volver:hover,
+.error-volver:focus {
+  border-color: #a88428;
+  background: #c99b24;
+  color: #231b07;
+}
+
+.detalle-panel,
+.detalle-cabecera,
+.detalle-datos,
+.detalle-acciones {
+  display: none;
+}
 .card-header {
-    background: var(--app-surface);
-    font-weight: 600;
-    border-bottom: 1px solid var(--app-border);
-    padding: .85rem 1rem;
+  background: var(--agro-verde);
+  color: #fff;
+  border-bottom: 0;
+  font-weight: 700;
 }
 
-.kpi-icon {
-    width: 44px; height: 44px;
-    border-radius: .6rem;
-    display: grid; place-items: center;
-    font-size: 1.3rem;
+.detalle-panel {
+  max-width: 560px;
+  overflow: hidden;
+  border: 1px solid var(--agro-borde);
+  border-radius: .9rem;
+  background: var(--agro-superficie);
 }
-.kpi-value { font-size: 1.6rem; font-weight: 700; line-height: 1.1; }
-.kpi-label { font-size: .85rem; color: var(--app-muted); }
+.detalle-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem;
+  border-bottom: 1px solid var(--agro-borde);
+  background: color-mix(in srgb, var(--agro-verde) 8%, var(--agro-superficie));
+}
+.detalle-etiqueta {
+  display: block;
+  margin-bottom: .15rem;
+  color: var(--agro-texto-suave);
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.detalle-cabecera h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+.detalle-badge {
+  --bs-badge-padding-x: .7rem;
+  --bs-badge-padding-y: .45rem;
+  background: color-mix(in srgb, var(--agro-lima) 18%, var(--agro-superficie));
+  color: var(--agro-lima);
+  border: 1px solid color-mix(in srgb, var(--agro-lima) 35%, transparent);
+}
+.detalle-datos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+  padding: .35rem 1.25rem;
+}
+.detalle-datos div {
+  padding: .85rem 0;
+  border-bottom: 1px solid var(--agro-borde);
+}
+.detalle-datos div:nth-last-child(-n + 2) {
+  border-bottom: 0;
+}
+.detalle-datos dt {
+  color: var(--agro-texto-suave);
+  font-size: .78rem;
+  font-weight: 500;
+}
+.detalle-datos dd {
+  margin: .15rem 0 0;
+  color: var(--agro-texto);
+  font-weight: 600;
+}
+.detalle-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: .6rem;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--agro-borde);
+}
 
-/* ---------- Tablas ---------- */
-.table { margin-bottom: 0; }
-.table > :not(caption) > * > * { padding: .7rem 1rem; }
+.enlace-suave {
+  color: var(--agro-lima);
+  font-size: .875rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+.enlace-suave:hover { text-decoration: underline; }
+
+/* Botones */
+.btn-agro {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--agro-verde);
+  --bs-btn-border-color: var(--agro-verde);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #388e3c;
+  --bs-btn-hover-border-color: #388e3c;
+  --bs-btn-active-bg: var(--agro-verde-oscuro);
+  --bs-btn-active-border-color: var(--agro-verde-oscuro);
+  font-weight: 500;
+}
+.btn-agro-sec {
+  --bs-btn-color: var(--agro-texto);
+  --bs-btn-bg: var(--agro-superficie);
+  --bs-btn-border-color: var(--agro-borde);
+  --bs-btn-hover-color: var(--agro-texto);
+  --bs-btn-hover-bg: var(--agro-superficie-2);
+  --bs-btn-hover-border-color: var(--agro-verde);
+  --bs-btn-active-bg: var(--agro-superficie-2);
+  --bs-btn-active-border-color: var(--agro-verde);
+  --bs-btn-active-color: var(--agro-texto);
+  font-weight: 500;
+}
+
+
+/* ---------- 7. Mapa de parcelas (lo más característico del panel) ---------- */
+.campo {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-auto-rows: 8.5rem;
+  grid-auto-flow: dense;
+  gap: .5rem;
+  padding: 1.25rem;
+}
+.t-w2 { grid-column: span 2; }
+.t-w3 { grid-column: span 3; }
+.t-h2 { grid-row: span 2; }
+
+.parcela {
+  --c: var(--agro-lima);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: .65rem .8rem;
+  border: 1px solid color-mix(in srgb, var(--c) 50%, var(--agro-borde));
+  border-radius: .45rem;
+  /* surcos de cultivo: rayas inclinadas del color del estado */
+  background:
+    repeating-linear-gradient(115deg,
+      color-mix(in srgb, var(--c) 20%, transparent) 0 .35rem,
+      transparent .35rem .9rem),
+    color-mix(in srgb, var(--c) 9%, var(--agro-superficie));
+  color: var(--agro-texto);
+  text-decoration: none;
+  overflow: hidden;
+  transition: transform .15s, border-color .15s;
+  animation: brotar .55s ease-out both;
+  animation-delay: calc(var(--i, 0) * 45ms);
+}
+.parcela:hover { transform: translateY(-2px); border-color: var(--c); color: var(--agro-texto); }
+.parcela-cab b { font-family: var(--agro-fuente-titulos); font-size: .95rem; }
+.parcela-cultivo {
+  color: var(--agro-texto-suave);
+  font-size: .8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.parcela-valor {
+  font-family: var(--agro-fuente-titulos);
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--c);
+}
+.parcela-valor small { margin-left: .1rem; font-size: .8rem; font-weight: 500; }
+.t-h2 .parcela-valor { font-size: 2.2rem; }
+
+.parcela--optima { --c: var(--agro-lima); }
+.parcela--seca   { --c: var(--agro-tierra); }
+.parcela--agua   { --c: var(--agro-agua); }
+.parcela--sin-senal {
+  --c: var(--agro-gris);
+  border-style: dashed;
+  background:
+    repeating-linear-gradient(135deg,
+      color-mix(in srgb, var(--agro-gris) 22%, transparent) 0 .3rem,
+      transparent .3rem .6rem),
+    var(--agro-superficie);
+}
+
+/* Los bancales "brotan" una sola vez al cargar */
+@keyframes brotar {
+  from { opacity: 0; transform: scale(.93); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.leyenda { display: flex; flex-wrap: wrap; gap: .4rem 1rem; font-size: .8rem; color: var(--agro-texto-suave); }
+.leyenda li { display: flex; align-items: center; gap: .4rem; }
+.leyenda-color {
+  --c: var(--agro-gris);
+  width: .8rem;
+  height: .8rem;
+  border-radius: .2rem;
+  background: var(--c);
+}
+.leyenda-color--off { background: transparent; border: 1px dashed var(--agro-gris); }
+
+@media (max-width: 767.98px) {
+  .campo { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 6rem; }
+  .t-w2, .t-w3 { grid-column: span 2; }
+  .t-h2 { grid-row: auto; }
+  .t-h2 .parcela-valor { font-size: 1.6rem; }
+}
+
+
+/* ---------- 8. Alertas ---------- */
+.alertas { padding: .5rem 1.25rem; }
+.alerta {
+  display: flex;
+  gap: .85rem;
+  padding: .9rem 0;
+  border-bottom: 1px solid var(--agro-borde);
+}
+.alerta:last-child { border-bottom: 0; }
+.alerta p { font-weight: 500; line-height: 1.3; }
+.alerta small { font-size: .8rem; }
+.alerta-icono {
+  --c: var(--agro-tierra);
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--c) 18%, transparent);
+  color: var(--c);
+}
+.alerta-icono--aviso { --c: var(--agro-tierra); }
+.alerta-icono--error { --c: var(--agro-alerta); }
+.alerta-icono--agua  { --c: var(--agro-agua); }
+
+
+/* ---------- 9. KPIs ---------- */
+.kpi {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  height: 100%;
+  padding: 1.1rem 1.25rem;
+}
+.kpi-icono {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: .65rem;
+  background: var(--agro-superficie-2);
+  color: var(--agro-lima);
+  font-size: 1.25rem;
+}
+.kpi p { margin: 0; }
+.kpi-etiqueta { color: var(--agro-texto-suave); font-size: .85rem; }
+.kpi-valor {
+  font-family: var(--agro-fuente-titulos);
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+.kpi-valor small { font-size: 1rem; font-weight: 500; color: var(--agro-texto-suave); }
+.kpi-nota { color: var(--agro-texto-suave); font-size: .78rem; }
+
+
+/* ---------- 10. Gráfico y barras de producción ---------- */
+.grafico { position: relative; height: 18rem; }
+
+.barras { display: grid; gap: 1.1rem; padding: 1.25rem; }
+.barra-fila { display: flex; justify-content: space-between; margin-bottom: .35rem; font-size: .9rem; }
+.barra-fila b { font-variant-numeric: tabular-nums; }
+.barra {
+  height: .6rem;
+  border-radius: 1rem;
+  background: var(--agro-superficie-2);
+  overflow: hidden;
+}
+.barra span {
+  display: block;
+  width: var(--v, 0);
+  height: 100%;
+  border-radius: 1rem;
+  background: linear-gradient(90deg, var(--agro-verde), var(--agro-lima));
+}
+
+
+/* ---------- 11. Tabla y estados ---------- */
+.table-agro {
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--agro-texto);
+  --bs-table-border-color: var(--agro-borde);
+  --bs-table-hover-bg: var(--agro-superficie-2);
+  --bs-table-hover-color: var(--agro-texto);
+  font-variant-numeric: tabular-nums;
+}
+.table-agro,
+.table-agro thead,
+.table-agro tbody,
+.table-agro tr,
+.table-agro th,
+.table-agro td {
+  box-sizing: border-box;
+}
+.table-agro th,
+.table-agro td {
+  height: 3.25rem;
+  padding: .75rem 1.25rem;
+  vertical-align: middle;
+  text-align: left;
+}
+.table-agro th:last-child,
+.table-agro td:last-child {
+  text-align: center;
+  white-space: nowrap;
+}
+.table-agro thead th {
+  padding: .75rem 1.25rem;
+  background: var(--agro-superficie-2);
+  color: #fff;
+  font-size: .8rem;
+  font-weight: 700;
+  border-bottom-width: 1px;
+}
+.table-agro tfoot,
+.table-agro tfoot tr,
+.table-agro tfoot td,
+.table-agro tfoot th {
+  background: var(--agro-superficie-2);
+  color: #fff;
+  border-color: var(--agro-borde);
+}
+.table-agro tfoot td {
+  padding: .75rem 1.25rem;
+  font-weight: 700;
+  font-size: .8rem;
+  border-bottom: 0;
+}
 .table thead th {
-    font-size: .75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: .04em;
-    color: var(--app-muted);
-    background: var(--app-surface-soft);
+  color: #fff;
+  font-weight: 700;
+  background: var(--agro-superficie-2);
 }
-.table {
-    --bs-table-bg: var(--app-surface);
-    --bs-table-color: #e8e8e8;
-}
-.parcela-table {
-    border: 1px solid #a6a6a6;
-}
-.parcela-table > :not(caption) > * > * {
-    border-bottom-color: #353535;
-}
-.parcela-table thead th {
-    border-bottom-color: #a6a6a6;
-}
-.table-success {
-    --bs-table-bg: #242424;
-    --bs-table-color: #bdbdbd;
-}
-.form-panel { background: var(--app-surface); }
-.form-panel-title { background: var(--app-primary-soft); color: #d9f0e2; }
-.form-control,
-.form-select {
-    background-color: var(--app-surface-soft);
-    border-color: var(--app-border);
-    color: #e8e8e8;
-}
-.form-control:focus,
-.form-select:focus {
-    background-color: var(--app-surface-soft);
-    color: #e5ebe7;
-}
-.dropdown-menu { background-color: var(--app-surface); border-color: var(--app-border); }
-.dropdown-item { color: #e5ebe7; }
-.dropdown-item:hover { background-color: var(--app-surface-soft); color: #fff; }
-.dropdown-divider { border-color: var(--app-border); }
-.btn-light {
-    --bs-btn-bg: var(--app-surface-soft);
-    --bs-btn-border-color: var(--app-border);
-    --bs-btn-color: #e5ebe7;
-}
-.text-body { color: #e8e8e8 !important; }
+.table-agro tbody td { padding: .8rem 1.25rem; }
 
-/* ---------- Estados (sensores, parcelas, lecturas) ---------- */
 .estado {
-    display: inline-flex; align-items: center; gap: .35rem;
-    font-size: .75rem; font-weight: 600;
-    padding: .25rem .6rem;
-    border-radius: 999px;
-    white-space: nowrap;
+  --c: var(--agro-lima);
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .2rem .6rem;
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--c) 16%, transparent);
+  color: var(--c);
+  font-size: .78rem;
+  font-weight: 700;
+  white-space: nowrap;
 }
 .estado::before {
-    content: "";
-    width: .45rem; height: .45rem;
-    border-radius: 50%;
-    background: currentColor;
+  content: "";
+  width: .4rem;
+  height: .4rem;
+  border-radius: 50%;
+  background: var(--c);
 }
-.estado-ok       { color: #1e7a46; background: #e3f4ea; }
-.estado-aviso    { color: #9a6700; background: #fff4d6; }
-.estado-alarma   { color: #b42318; background: #fde8e6; }
-.estado-inactivo { color: #5f6b66; background: #eceeed; }
+.estado--ok    { --c: var(--agro-lima); }
+.estado--aviso { --c: var(--agro-tierra); }
+.estado--error { --c: var(--agro-alerta); }
 
-/* ---------- Botones y formularios en el color de la app ---------- */
-.btn-primary {
-    --bs-btn-bg: var(--app-primary);
-    --bs-btn-border-color: var(--app-primary);
-    --bs-btn-hover-bg: var(--app-primary-hover);
-    --bs-btn-hover-border-color: var(--app-primary-hover);
-    --bs-btn-active-bg: #22543d;
-    --bs-btn-active-border-color: #22543d;
-    --bs-btn-disabled-bg: var(--app-primary);
-    --bs-btn-disabled-border-color: var(--app-primary);
-}
-.form-control:focus,
-.form-select:focus {
-    border-color: #8fc9a6;
-    box-shadow: 0 0 0 .2rem rgba(47, 133, 90, .15);
-}
-.form-check-input:checked {
-    background-color: var(--app-primary);
-    border-color: var(--app-primary);
-}
-.progress-bar { background-color: var(--app-primary); }
 
-/* ---------- Pie ---------- */
-.app-footer {
-    font-size: .8rem;
-    color: var(--app-muted);
-    border-top: 1px solid var(--app-border);
-    margin-top: 2.5rem;
-    padding-top: 1rem;
+/* ---------- 12. Hueco libre para añadir un widget ---------- */
+.hueco {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem;
+  min-height: 12rem;
+  padding: 1.5rem;
+  border: 2px dashed var(--agro-borde);
+  border-radius: .9rem;
+  text-align: center;
+  transition: border-color .15s;
+}
+.hueco:hover { border-color: var(--agro-verde); }
+.hueco i { font-size: 2rem; color: var(--agro-lima); }
+.hueco h2 { margin: 0; font-size: 1.05rem; font-weight: 700; }
+.hueco p { max-width: 22rem; font-size: .9rem; }
+
+
+/* ---------- 12b. Aviso, indicadores de colores, calidad ---------- */
+.agro-flash {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  margin-bottom: 1.5rem;
+  padding: .8rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--agro-lima) 45%, var(--agro-borde));
+  border-radius: .6rem;
+  background: color-mix(in srgb, var(--agro-verde) 22%, var(--agro-superficie));
+  color: var(--agro-texto);
+}
+.agro-flash i { color: var(--agro-lima); }
+.agro-flash .btn-close { margin-left: auto; }
+
+.kpi-icono--verde  { --c: var(--agro-lima); }
+.kpi-icono--agua   { --c: var(--agro-agua); }
+.kpi-icono--tierra { --c: var(--agro-tierra); }
+.kpi-icono--cian   { --c: #4fc8d4; }
+.kpi-icono--verde, .kpi-icono--agua, .kpi-icono--tierra, .kpi-icono--cian {
+  background: color-mix(in srgb, var(--c) 16%, var(--agro-superficie-2));
+  color: var(--c);
+}
+
+.enlace-cultivo { color: var(--agro-agua); font-weight: 500; text-decoration: none; }
+.enlace-cultivo:hover { text-decoration: underline; }
+.calidad {
+  --c: var(--agro-lima);
+  display: inline-block;
+  padding: .2rem .65rem;
+  border: 1px solid color-mix(in srgb, var(--c) 55%, transparent);
+  border-radius: .4rem;
+  background: color-mix(in srgb, var(--c) 14%, transparent);
+  color: var(--c);
+  font-size: .78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.calidad--extra   { --c: var(--agro-lima); }
+.calidad--primera { --c: var(--agro-agua); }
+.calidad--segunda { --c: var(--agro-tierra); }
+
+
+/* ---------- 13. Accesibilidad: respeta "reducir movimiento" ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }

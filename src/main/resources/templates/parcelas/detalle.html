@@ -1,44 +1,41 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/layout :: head('Panel')}"></head>
+<html lang="es" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Detalle de parcela')}">
+    <title>Detalle de parcela | AgroMonitor</title>
+</head>
 <body>
 
-<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<header th:replace="~{fragments/layout :: navbar}"></header>
 
-<div class="d-flex">
+<div class="agro-shell">
     <aside th:replace="~{fragments/layout :: sidebar('parcelas')}"></aside>
 
-    <main class="app-main flex-grow-1 p-3 p-lg-4">
+    <main class="agro-main" id="contenido">
+        <div class="agro-contenido">
+            <div th:replace="~{fragments/layout :: header-main('Detalle de parcela')}"></div>
 
-        <div th:replace="~{fragments/layout :: header-main('Detalle de parcela')}"></div>
-
-        <div class="row g-3">
             <div class="card" style="max-width: 400px;">
-
-                <!-- Usamos card-header que crea una especie de cabecera,
-                bg-success que lo pinta verde
-                y text-white pone el texto blanco -->
-                <div class="card-header bg-success text-white ">Información de la parcela </div>
-
+                <div class="card-header text-white">Información de la parcela</div>
                 <div class="card-body">
-                    <!-- Usamos este div para poner el nombre y el cultivo en la misma línea -->
-                    <div class="d-flex align-items-center gap-2 mb-4">
-
-                        <h4 th:text="${parcela.getNombre()}" class="card-title text-success mb-0"></h4>
-                        <span th:text="${parcela.getTipoCultivo()}" class="badge text-dark"></span>
-
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <h4 th:text="${parcela.nombre}" class="card-title text-success mb-0"></h4>
+                        <span th:text="${parcela.tipoCultivo}"
+                              class="badge bg-success text-white"></span>
                     </div>
-                    <p class="card-text">
-                        (<span th:text="${parcela.getSuperficie()}"></span>,
-                        <span th:text="${parcela.getUbicacion()}"></span>)
+                    <p class="card-text mb-3">
+                        <strong>Superficie:</strong>
+                        <span th:text="${parcela.superficie}"></span> ha
+                    </p>
+                    <p class="card-text mb-4">
+                        <strong>Ubicación:</strong>
+                        <span th:text="${parcela.ubicacion}"></span>
                     </p>
                     <a th:href="@{/parcelas}" class="btn btn-primary">Volver atrás</a>
                 </div>
             </div>
 
+            <footer th:replace="~{fragments/layout :: footer}"></footer>
         </div>
-
-        <footer th:replace="~{fragments/layout :: footer}"></footer>
     </main>
 </div>
 

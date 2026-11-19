@@ -1,36 +1,50 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/layout :: head('Panel')}"></head>
+<html lang="es" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Detalle del sensor')}">
+    <title>Detalle del sensor | AgroMonitor</title>
+</head>
 <body>
 
-<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<header th:replace="~{fragments/layout :: navbar}"></header>
 
-<div class="d-flex">
+<div class="agro-shell">
     <aside th:replace="~{fragments/layout :: sidebar('sensores')}"></aside>
 
-    <main class="app-main flex-grow-1 p-3 p-lg-4">
+    <main class="agro-main" id="contenido">
+        <div class="agro-contenido">
+            <div th:replace="~{fragments/layout :: header-main('Detalle del sensor')}"></div>
 
-        <div th:replace="~{fragments/layout :: header-main('Detalle del sensor')}"></div>
-
-        <div class="row g-3">
-
-            <div class="container mt-4">
-                <div class="card mt-3" style="max-width: 320px;">
-                    <div class="card-body">
-                        <h4  th:text="${sensor.getName()}" class="card-title"></h4>
-                        <p th:text="${sensor.getModel()}" class="card-subtitle fg-3"></p>
-                        <p class="card-text">
-                            (<span th:text="${sensor.getLatitud()}"></span>,
-                            <span th:text="${sensor.getLongitud()}"></span>)
-                        </p>
-                        <a th:href="@{/sensors}" class="btn-outline theme-primary">Volver atrás</a>
+            <div class="card" style="max-width: 400px;">
+                <div class="card-header text-white">Información del sensor</div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <h4 th:text="${sensor.name}" class="card-title text-success mb-0"></h4>
+                        <span th:text="${sensor.tipo}"
+                              class="badge bg-success text-white"></span>
                     </div>
+                    <p class="card-text mb-2">
+                        <strong>Modelo:</strong>
+                        <span th:text="${sensor.model}"></span>
+                    </p>
+                    <p class="card-text mb-2">
+                        <strong>Unidad:</strong>
+                        <span th:text="${sensor.unidadMedida}"></span>
+                    </p>
+                    <p class="card-text mb-2">
+                        <strong>Estado:</strong>
+                        <span th:text="${sensor.estado}"></span>
+                    </p>
+                    <p class="card-text mb-4">
+                        <strong>Coordenadas:</strong>
+                        (<span th:text="${sensor.latitud}"></span>,
+                        <span th:text="${sensor.longitud}"></span>)
+                    </p>
+                    <a th:href="@{/sensors}" class="btn btn-primary">Volver atrás</a>
                 </div>
             </div>
 
+            <footer th:replace="~{fragments/layout :: footer}"></footer>
         </div>
-
-        <footer th:replace="~{fragments/layout :: footer}"></footer>
     </main>
 </div>
 
