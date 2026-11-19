@@ -3,9 +3,8 @@ package com.daw.parcelas.services;
 import com.daw.parcelas.model.Parcela;
 import com.daw.parcelas.model.TipoCultivo;
 import com.daw.parcelas.repository.ParcelaRepository;
-import org.springframework.http.HttpStatus;
+import com.daw.parcelas.exceptions.RecursoNoEncontradoException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 @Service
@@ -28,8 +27,8 @@ public class ParcelaServiceImpl implements ParcelaService {
     @Override
     public Parcela buscarPorId(Long id) {
         return ParcelaRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "No existe la parcela con id " + id));
+                .orElseThrow(() -> new RecursoNoEncontradoException(
+                        "No existe la parcela con id " + id));
     }
 
     //Guarda una parcela en la base de datos
@@ -49,9 +48,9 @@ public class ParcelaServiceImpl implements ParcelaService {
     @Override
     public double calcularSuperficieTotal() {
         return ParcelaRepository.findAll()
-                                .stream()
-                                .mapToDouble(Parcela::getSuperficie)
-                                .sum();
+                .stream()
+                .mapToDouble(Parcela::getSuperficie)
+                .sum();
     }
 
     //EXTRA 2: Filtrar parcelas por tipo de cultivo

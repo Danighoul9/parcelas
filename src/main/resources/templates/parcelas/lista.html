@@ -1,20 +1,25 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/layout :: head('Panel')}"></head>
+<html lang="es" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout :: head('Panel')}">
+    <title>Panel | AgroMonitor</title>
+</head>
+
 <body>
 
-<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<header th:replace="~{fragments/layout :: navbar}"></header>
 
-<div class="d-flex">
+<div class="agro-shell" >
+
     <aside th:replace="~{fragments/layout :: sidebar('parcelas')}"></aside>
 
-    <main class="app-main flex-grow-1 p-3 p-lg-4">
+    <main class="agro-main" id="contenido">
+        <div class="agro-contenido">
 
-        <div th:replace="~{fragments/layout :: header-main('Parcelas')}"></div>
+            <div th:replace="~{fragments/layout :: header-main('Panel de la explotación')}"></div>
+            <div th:replace="~{fragments/layout :: mensajes}"></div>
 
-        <div class="row g-3">
-
-            <div class="container mt-3">
+            <div class="row g-4">
 
                 <div class="py-4">
                     <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
@@ -30,44 +35,42 @@
                     </div>
                 </div>
 
-                <table class="table table-hover align-middle mb-3 parcela-table"
+                <table class="table table-hover align-middle mb-3 table-agro"
                        style="table-layout: fixed;">
-                    <!-- Hemos puesto el width tanto en esta tabla como en al de als parcelas para que no se descuadrasen
-                         los nombres y la información-->
                     <colgroup>
-                        <col style="width: 23%;">
-                        <col style="width: 23%;">
-                        <col style="width: 23%;">
+                        <col style="width: 16%;">
                         <col style="width: 17%;">
-                        <col style="width: 14%;">
+                        <col style="width: 18%;">
+                        <col style="width: 10%;">
+                        <col style="width: 18%;">
                     </colgroup>
+
                     <thead class="table-success">
                     <tr>
-                        <th>Nombre</th>
-                        <th>Ubicación</th>
-                        <th>Superficie</th>
-                        <th>Tipo</th>
-                        <th>Acciones</th>
+                        <th>NOMBRE</th>
+                        <th>TIPO</th>
+                        <th>UBICACIÓN</th>
+                        <th>SUPERFICIE</th>
+                        <th>ACCIONES</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="parcela : ${parcelas}">
-                        <td> <a th:href="@{/parcelas/{id}(id=${parcela.getId()})}"
-                                th:text="${parcela.getNombre()}"
-                                class="text-success fw-bold text-decoration-none"> </a>
-                            <!--Hemos cambiado esta parte para que no tenga decoracion el texto y salga en negrita de ahi el bold -->
+                        <td>
+                            <a th:href="@{/parcelas/{id}(id=${parcela.getId()})}"
+                               th:text="${parcela.getNombre()}"
+                               class="enlace-cultivo fw-semibold text-decoration-none"></a>
+                        </td>
+                        <td>
+                            <span class="badge bg-success text-white" th:text="${parcela.getTipoCultivo()}"></span>
                         </td>
                         <td th:text="${parcela.getUbicacion()}"></td>
                         <td>
                             <span th:text="${parcela.getSuperficie()}"></span> ha
                         </td>
-                        <td> <span class="badge bg-success text-white" th:text="${parcela.getTipoCultivo()}"> </span> </td>
-                        <!-- Hemos añadido un badge para que el tipo de cultivo salga en un recuadro verde y con letras blancas -->
-                        <td>
-
+                        <td class="text-center">
                             <a th:href="@{/parcelas/{id}/editar(id=${parcela.id})}">
                                 <button class="btn btn-outline-warning btn-sm" aria-label="Editar parcela">
-                                    <!-- Hemos puesto un lapiz en color amarillo -->
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                          fill="currentColor" viewBox="0 0 16 16">
                                         <path d="M12.854.146a.5.5 0 0 1 .707 0l2.293 2.293a.5.5 0 0 1 0 .707l-9.5
@@ -76,10 +79,9 @@
                                     </svg>
                                 </button>
                             </a>
-
-                            <!-- Formulario POST de eliminación con confirmación -->
                             <form th:action="@{/parcelas/eliminar/{id}(id=${parcela.id})}" method="post"
-                                  onsubmit="return confirm('¿Seguro que quieres eliminar esta parcela?');" style="display:inline;">
+                                  onsubmit="return confirm('¿Seguro que quieres eliminar esta parcela?');"
+                                  style="display:inline;">
                                 <button type="submit" class="btn btn-outline-danger btn-sm" aria-label="Eliminar parcela">
                                     <!-- Aqui hemos optado por solo poner el iconito de papelera en rojo -->
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
@@ -92,22 +94,27 @@
                     </tbody>
                     <tfoot class="table-success">
                     <tr>
-                        <td colspan="2" class="text-end fw-bold">Superficie total:</td>
-                        <td class="fw-bold">
+                        <td></td>
+                        <td></td>
+                        <td class="fw-bold text-white">Superficie total:</td>
+                        <td class="fw-bold text-white">
                             <span th:text="${superficieTotal}"></span> ha
                         </td>
-                        <td colspan="2"></td>
+                        <td></td>
                     </tr>
                     </tfoot>
                 </table>
+
             </div>
 
-        </div>
+            <footer th:replace="~{fragments/layout :: footer}"></footer>
 
-        <footer th:replace="~{fragments/layout :: footer}"></footer>
+        </div>
     </main>
+
 </div>
 
 <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+
 </body>
 </html>

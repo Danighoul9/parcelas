@@ -1,36 +1,38 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/layout :: head('Panel')}"></head>
-<body>
+<html lang="es" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
 
-<nav th:replace="~{fragments/layout :: navbar}"></nav>
+  <head th:replace="~{fragments/layout :: head('Panel')}">
+    <title>Panel | AgroMonitor</title>
+  </head>
 
-<div class="d-flex">
-    <aside th:replace="~{fragments/layout :: sidebar('dashboard')}"></aside>
+  <body>
 
-    <main class="app-main flex-grow-1 p-3 p-lg-4">
+    <header th:replace="~{fragments/layout :: navbar}"></header>
 
-        <div class="page-header d-flex flex-wrap justify-content-between align-items-end gap-2">
-            <div>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb"><li class="breadcrumb-item active">Panel</li></ol>
-                </nav>
-                <h1>Panel general</h1>
+      <div class="agro-shell" >
+
+        <aside th:replace="~{fragments/layout :: sidebar('AQUI VA EL TÍTULO DEL PANEL')}"></aside>
+
+        <main class="agro-main" id="contenido">
+          <div class="agro-contenido">
+
+            <div th:replace="~{fragments/layout :: header-main('Panel de la explotación')}"></div>
+            <div th:replace="~{fragments/layout :: mensajes}"></div>
+
+            <div class="row g-4">
+
+
+
             </div>
-            <span class="text-secondary small">
-        <i class="bi bi-clock me-1"></i>Actualizado:
-        <span th:text="${#temporals.format(#temporals.createNow(), 'dd/MM/yyyy HH:mm')}">09/11/2026 19:40</span>
-      </span>
-        </div>
 
-        <div class="row g-3">
+            <footer th:replace="~{fragments/layout :: footer}"></footer>
 
-        </div>
+          </div>
+        </main>
 
-        <footer th:replace="~{fragments/layout :: footer}"></footer>
-    </main>
-</div>
+      </div>
 
-<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
-</body>
+    <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+
+  </body>
 </html>
