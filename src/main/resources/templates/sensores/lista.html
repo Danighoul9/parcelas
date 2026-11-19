@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Panel')}"></head>
+<body>
+
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<div class="d-flex">
+    <aside th:replace="~{fragments/layout :: sidebar('sensores')}"></aside>
+
+    <main class="app-main flex-grow-1 p-3 p-lg-4">
+        <div th:replace="~{fragments/layout :: header-main('Sensores')}"></div>
+
+        <div class="row g-3">
+
+            <div class="container mt-3">
+                <div class="py-4">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+                        <div class="d-flex align-items-center gap-3">
+                            <h1 class="mb-0">Sensores</h1>
+                            <a th:href="@{/sensors/new}" class="btn btn-success" aria-label="Añadir sensor">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                     fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                </svg>
+                                Add sensor
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <form th:action="@{/sensors}" method="get" class="row g-3 align-items-end">
+                            <div class="col-sm-6 col-lg-4">
+                                <label for="q" class="form-label">Buscar</label>
+                                <input type="text" class="form-control" id="q" name="q" th:value="${q}" placeholder="Nombre del sensor">
+                            </div>
+                            <div class="col-sm-4 col-lg-3">
+                                <label for="tipo" class="form-label">Tipo</label>
+                                <select class="form-control" id="tipo" name="tipo">
+                                    <option value="TODOS">Todos</option>
+                                    <option th:each="t : ${tipos}" th:value="${t}" th:text="${t}"
+                                            th:selected="${t.toString() == tipo}"></option>
+                                </select>
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-search me-1"></i>Buscar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <table id="resultados" th:fragment="tabla-sensores" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>NOMBRE</th>
+                        <th>TIPO</th>
+                        <th>MODELO</th>
+                        <th>ESTADO</th>
+                        <th>LATITUD</th>
+                        <th>LONGITUD</th>
+                        <th>ACCIONES</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="sensor : ${sensors}">
+                        <td><a th:href="@{/sensors/{id}(id=${sensor.getId()})}" th:text="${sensor.getName()}"></a></td>
+                        <td th:text="${sensor.getTipo()}"></td>
+                        <td th:text="${sensor.getModel()}"></td>
+                        <td th:text="${sensor.getEstado()}"></td>
+                        <td th:text="${sensor.getLatitud()}"></td>
+                        <td th:text="${sensor.getLongitud()}"></td>
+                        <td>
+                            <a class="btn btn-outline-danger btn-sm me-2"
+                               th:href="@{/sensors/delete/{id}(id=${sensor.getId()})}"
+                               aria-label="Eliminar sensor"
+                               onclick="return confirm('¿Seguro que quieres eliminar este sensor?');">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                </svg>
+                            </a>
+                            <a class="btn btn-outline-warning btn-sm" aria-label="Editar sensor"
+                               th:href="@{/sensors/update/{id}(id=${sensor.getId()})}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                </svg>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+        <footer th:replace="~{fragments/layout :: footer}"></footer>
+    </main>
+</div>
+
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+
+</body>
+</html>
