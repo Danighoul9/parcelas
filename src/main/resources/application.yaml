@@ -3,9 +3,9 @@ spring:
     name: parcelas
 
   datasource:
-    url: jdbc:mariadb://localhost:3307/ejemplo #El puerto cambia dependiendo donde tengas la base de datos alojada
-    username: usuario
-    password: usuario
+    url: "${SPRING_DATASOURCE_URL:jdbc:mariadb://localhost:3306/ejemplo}" #El puerto cambia dependiendo donde tengas la base de datos alojada
+    username: "${SPRING_DATASOURCE_USERNAME:usuario}"
+    password: "${SPRING_DATASOURCE_PASSWORD:usuario}"
 
   # Esto de sql.init.mode:always es para que la base de datos lea siempre el archivo sql
   # una vez ya esten insertados los datos lo ponemos en never
