@@ -1,0 +1,36 @@
+services:
+  db:
+    image: docker.io/library/mariadb:latest
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${MARIADB_DATABASE}
+      MARIADB_USER: ${MARIADB_USER}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+    volumes:
+      - dbdata:/var/lib/mysql
+      # Opcional: scripts .sql que se ejecutan SOLO la primera vez (volumen vacío)
+      # - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: always
+    # Sin "ports": la BD NO se publica fuera. Solo la ve la app.
+
+  app:
+    build: .
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://db:3306/${MARIADB_DATABASE}
+      SPRING_DATASOURCE_USERNAME: ${MARIADB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${MARIADB_PASSWORD}
+      # Limita la memoria de la JVM (importante en instancias pequeñas)
+      JAVA_TOOL_OPTIONS: "-XX:MaxRAMPercentage=50"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    restart: always
+
+volumes:
+  dbdata:
