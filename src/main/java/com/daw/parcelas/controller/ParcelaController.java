@@ -57,7 +57,7 @@ public class ParcelaController {
         model.addAttribute("tipo", tipo);
         model.addAttribute("superficieTotal", parcelaService.calcularSuperficieTotal());
 
-        return "parcelas/lista";
+        return "parcelas/lista"; // → templates/parcelas/lista.html
     }
 
 
@@ -65,7 +65,7 @@ public class ParcelaController {
     public String detalle(@PathVariable Long id, Model model) {
         //Obtenemos todas las parcelas con ayuda del metodo .buscarPorId() del servicio
         model.addAttribute("parcela", parcelaService.buscarPorId(id));
-        return "parcelas/detalle"; // → templates/parcelas/dGET /parcelas/nuevaGET /parcelas/nuevaGET /parcelas/nuevaGET /parcelas/nuevaPOST /parcelas/eliminar/2etalle.html (En este caso)
+        return "parcelas/detalle"; // → templates/parcelas/detalle.html (En este caso)
     }
 
     //PARTE DE MIRIAN GONZÁLEZ RODRÍGUEZ

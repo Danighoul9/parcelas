@@ -104,16 +104,16 @@
                                     </svg>
                                 </button>
                             </a>
-                            <form th:action="@{/parcelas/eliminar/{id}(id=${parcela.id})}" method="post"
-                                  onsubmit="return confirm('¿Seguro que quieres eliminar esta parcela?');"
-                                  style="display:inline;">
-                                <button type="submit" class="btn btn-outline-danger btn-sm" aria-label="Eliminar parcela">
-                                    <!-- Aqui hemos optado por solo poner el iconito de papelera en rojo -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                                        <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
-                                    </svg>
-                                </button>
-                            </form>
+
+                            <!-- Botón de eliminar con modal -->
+                            <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalEliminar"
+                                    th:data-url="@{/parcelas/eliminar/{id}(id=${parcela.id})}"
+                                    th:data-nombre="${parcela.nombre}" aria-label="Eliminar parcela">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                     fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                                </svg>
+                            </button>
                         </td>
                     </tr>
                     </tbody>
@@ -139,6 +139,23 @@
 
 </div>
 
+<!-- Modal de confirmación de eliminación con script proporcionado por el profesor -->
+<div th:replace="~{fragments/layout :: modalEliminar}"></div>
+<script>
+    const modalEliminar = document.getElementById("modalEliminar");
+
+    if (modalEliminar) {
+        modalEliminar.addEventListener("show.bs.modal", (evento) => {
+            const boton = evento.relatedTarget;
+
+            modalEliminar.querySelector("#modalEliminarForm").action =
+                boton.dataset.url;
+
+            modalEliminar.querySelector("#modalEliminarNombre").textContent =
+                boton.dataset.nombre;
+        });
+    }
+</script>
 <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 
 </body>

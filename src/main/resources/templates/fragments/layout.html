@@ -174,6 +174,43 @@
   </span>
 </footer>
 
+
+
+<!-- ============ Modal de eliminación ============ -->
+<div th:fragment="modalEliminar"
+     class="modal fade"
+     id="modalEliminar"
+     tabindex="-1"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5">Confirmar eliminación</h1>
+      </div>
+
+      <div class="modal-body">
+        ¿Seguro que quieres eliminar
+        <strong id="modalEliminarNombre"></strong>?
+      </div>
+
+      <div class="modal-footer">
+        <button type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal">
+          Cancelar
+        </button>
+
+        <form id="modalEliminarForm" method="post">
+          <button type="submit" class="btn btn-danger">
+            Eliminar
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!-- ============ SCRIPTS ============ -->
 <th:block th:fragment="scripts">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
