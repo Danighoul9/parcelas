@@ -9,4 +9,9 @@ public interface ProduccionService {
     Produccion buscarPorId(Long id);
     Produccion guardar(Produccion produccion);
     void eliminar(Long id);
+
+    //Metodo para calcular el total de kilos de una lista de producciones
+    double calcularTotalKilos(List<Produccion> producciones);
+    // Filtrar producciones por producto y calidad
+    List<Produccion> filtrarPorProductoYCalidad(String producto, String calidad);
 }

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/producciones")
 public class ProduccionController {
@@ -20,11 +22,23 @@ public class ProduccionController {
     }
 
     @GetMapping
-    public String listar(Model model) {
-        model.addAttribute(
-                "producciones",
-                produccionService.listarTodas()
-        );
+    public String listar(@RequestParam(required = false) String producto,
+                         @RequestParam(required = false) String calidad,
+                         Model model) {
+
+        if (producto == null) producto = "TODOS";
+        if (calidad == null) calidad = "TODOS";
+
+        List<Produccion> producciones = produccionService.filtrarPorProductoYCalidad(producto, calidad);
+
+        model.addAttribute("producciones", producciones);
+        model.addAttribute("producto", producto);
+        model.addAttribute("calidad", calidad);
+        model.addAttribute("produccionesTotal", producciones.size());
+        model.addAttribute("totalKilos", produccionService.calcularTotalKilos(producciones));
+        model.addAttribute("productos", Producto.values());
+        model.addAttribute("calidades", Calidad.values());
+
         return "producciones/lista";
     }
 

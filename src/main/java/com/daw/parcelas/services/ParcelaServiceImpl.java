@@ -1,84 +1,69 @@
 package com.daw.parcelas.services;
 
-import com.daw.parcelas.model.Parcela;
-import com.daw.parcelas.model.TipoCultivo;
-import com.daw.parcelas.repository.ParcelaRepository;
 import com.daw.parcelas.exceptions.RecursoNoEncontradoException;
+import com.daw.parcelas.model.Calidad;
+import com.daw.parcelas.model.Produccion;
+import com.daw.parcelas.model.Producto;
+import com.daw.parcelas.repository.ProduccionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
+public class ProduccionServiceImpl implements ProduccionService {
 
-public class ParcelaServiceImpl implements ParcelaService {
-    private final ParcelaRepository ParcelaRepository;
+    private final ProduccionRepository produccionRepository;
 
-    public ParcelaServiceImpl(ParcelaRepository parcelaRepository) {
-        this.ParcelaRepository = parcelaRepository;
+    public ProduccionServiceImpl(
+            ProduccionRepository produccionRepository) {
+        this.produccionRepository = produccionRepository;
     }
 
-
-    //Lista todas las parcelas
     @Override
-    public List<Parcela> listarTodas() {
-        return ParcelaRepository.findAll();
+    public List<Produccion> listarTodas() {
+        return produccionRepository.findAll();
     }
 
-    //Busca una parcela por su ID
     @Override
-    public Parcela buscarPorId(Long id) {
-        return ParcelaRepository.findById(id)
+    public Produccion buscarPorId(Long id) {
+        return produccionRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException(
-                        "No existe la parcela con id " + id));
+                        "No existe la producción con id " + id));
     }
 
-    //Guarda una parcela en la base de datos
     @Override
-    public Parcela guardar(Parcela parcela) {
-        return ParcelaRepository.save(parcela);
+    public Produccion guardar(Produccion produccion) {
+        return produccionRepository.save(produccion);
     }
 
-    //Elimina una parcela por su ID
     @Override
     public void eliminar(Long id) {
-        ParcelaRepository.deleteById(id);
-
+        produccionRepository.deleteById(id);
     }
 
-    // EXTRA 1: Calcula la superficie total de todas las parcelas
     @Override
-    public double calcularSuperficieTotal() {
-        return ParcelaRepository.findAll()
-                .stream()
-                .mapToDouble(Parcela::getSuperficie)
+    public double calcularTotalKilos(List<Produccion> producciones) {
+        return producciones.stream()
+                .mapToDouble(Produccion::getCantidadKg)
                 .sum();
     }
 
-    //EXTRA 2: Filtrar parcelas por tipo de cultivo
     @Override
-    public List<Parcela> filtrarPorCultivo(TipoCultivo tipo) {
-        // Devolvemos solo las parcelas que coinciden con el tipo buscado.
-        return ParcelaRepository.findByTipoCultivo(tipo);
-    }
+    public List<Produccion> filtrarPorProductoYCalidad(String producto, String calidad) {
 
-    //EXTRA 3: Listar parcelas ordenadas por nombre
-    @Override
-    public List<Parcela> listarOrdenadas() {
-        return ParcelaRepository.findAllByOrderByNombreAsc();
-    }
-
-    // Para el filtrado de parcelas por nombre y tipo de cultivo
-    @Override
-    public List<Parcela> filtrarParcelasPorNombreYTipo(String nombre, String tipo) {
-        // Si el tipo es "TODOS", devolvemos todas las parcelas que contengan el nombre, ignorando mayúsculas y minúsculas
-        if ("TODOS".equals(tipo)) {
-            return ParcelaRepository.findAll().stream()
-                    .filter(parcela -> parcela.getNombre()
-                            .toLowerCase()
-                            .contains(nombre.toLowerCase()))
-                    .toList();
-        // Si el tipo no es "TODOS", devolvemos las parcelas que contengan el nombre y coincidan con el tipo de cultivo
-        }else {
-            return ParcelaRepository.findAllByNombreContainingIgnoreCaseAndTipoCultivoEquals(nombre, TipoCultivo.valueOf(tipo));
+        if ("TODOS".equals(producto) && "TODOS".equals(calidad)) {
+            return produccionRepository.findAllByOrderByFechaRecoleccionDesc();
+        } else if ("TODOS".equals(producto)) {
+            return produccionRepository.findByCalidadOrderByFechaRecoleccionDesc(Calidad.valueOf(calidad));
+        } else if ("TODOS".equals(calidad)) {
+            return produccionRepository.findByProductoOrderByFechaRecoleccionDesc(Producto.valueOf(producto));
+        } else {
+            return produccionRepository.findByProductoAndCalidadOrderByFechaRecoleccionDesc(
+                    Producto.valueOf(producto),
+                    Calidad.valueOf(calidad));
         }
+
+
     }
+
 }
