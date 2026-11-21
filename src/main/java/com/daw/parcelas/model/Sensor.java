@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import jakarta.validation.constraints.*;
+
 
 @Entity(name = "sensors")
 @Getter
@@ -16,24 +18,31 @@ public class Sensor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+    @NotBlank(message = "{sensor.name.obligatorio}")
+    @Size(max = 60, message = "{sensor.name.longitud}")
     private String name;
+
+    @NotBlank(message = "{sensor.model.obligatorio}")
+    @Size(max = 60, message = "{sensor.model.longitud}")
     private String model;
 
+    @NotBlank(message = "{sensor.unidadMedida.obligatoria}")
+    private String unidadMedida;
+
+    @NotBlank(message = "{sensor.estado.obligatorio}")
+    private String estado;
+
+    @NotNull(message = "{sensor.tipo.obligatorio}")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "tipo_sensor")
     private TipoSensor tipo;
 
-    @Column(name = "unidad_medida")
-    private String unidadMedida;
-
-    private String estado;
-
-    @Column(nullable = true)
+    @NotNull(message = "{sensor.latitud.obligatoria}")
     private Double latitud;
 
-    @Column(nullable = true)
+    @NotNull(message = "{sensor.longitud.obligatoria}")
     private Double longitud;
-
 
 
 }

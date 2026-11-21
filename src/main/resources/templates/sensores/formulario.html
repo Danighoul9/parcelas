@@ -25,8 +25,13 @@
                     <span th:unless="${sensor.id == null}">Editar sensor</span>
                 </h2>
 
-                <div class="estado-alarma" th:if="${#fields.hasErrors()}">
-                    <p th:each="e : ${#fields.errors()}" th:text="${e}">Error general</p>
+                <div class="estado-alarma"
+                     th:if="${#fields.hasErrors('*')}">
+                    <p th:each="error : ${#fields.errors('*')}"
+                       th:text="${error}">
+                        Error general
+                    </p>
+                    <!-- Muestra los errores de validación -->
                 </div>
 
                 <div class="mb-3">
@@ -59,13 +64,13 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="latitud" class="form-label">Latitud</label>
-                            <input type="text" class="form-control form-control-lg" id="latitud" th:field="*{latitud}" required>
+                            <input type="number" class="form-control form-control-lg" id="latitud" th:field="*{latitud}" required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="longitud" class="form-label">Longitud</label>
-                            <input type="text" class="form-control form-control-lg" id="longitud" th:field="*{longitud}" required>
+                            <input type="number" class="form-control form-control-lg" id="longitud" th:field="*{longitud}" required>
                         </div>
                     </div>
                 </div>
