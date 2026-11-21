@@ -65,4 +65,20 @@ public class ParcelaServiceImpl implements ParcelaService {
     public List<Parcela> listarOrdenadas() {
         return ParcelaRepository.findAllByOrderByNombreAsc();
     }
+
+    // Para el filtrado de parcelas por nombre y tipo de cultivo
+    @Override
+    public List<Parcela> filtrarParcelasPorNombreYTipo(String nombre, String tipo) {
+        // Si el tipo es "TODOS", devolvemos todas las parcelas que contengan el nombre, ignorando mayúsculas y minúsculas
+        if ("TODOS".equals(tipo)) {
+            return ParcelaRepository.findAll().stream()
+                    .filter(parcela -> parcela.getNombre()
+                            .toLowerCase()
+                            .contains(nombre.toLowerCase()))
+                    .toList();
+        // Si el tipo no es "TODOS", devolvemos las parcelas que contengan el nombre y coincidan con el tipo de cultivo
+        }else {
+            return ParcelaRepository.findAllByNombreContainingIgnoreCaseAndTipoCultivoEquals(nombre, TipoCultivo.valueOf(tipo));
+        }
+    }
 }

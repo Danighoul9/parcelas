@@ -12,8 +12,13 @@ public interface ParcelaService {
     void eliminar(Long id);
     // EXTRA 1: Calcula la superficie total de todas las parcelas
     double calcularSuperficieTotal();
+
     //EXTRA 2: Filtrar parcelas por tipo de cultivo
     List<Parcela> filtrarPorCultivo(TipoCultivo tipo);
     //EXTRA 3: Listar parcelas ordenadas por nombre
     List<Parcela> listarOrdenadas();
+
+    // Para el filtrado de parcelas por nombre y tipo de cultivo
+    List<Parcela> filtrarParcelasPorNombreYTipo(String nombre, String tipo);
+
 }

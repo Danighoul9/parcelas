@@ -20,7 +20,7 @@
             <div th:replace="~{fragments/layout :: mensajes}"></div>
 
             <div class="row g-4">
-
+                <div class="col-12">
                 <div class="py-4">
                     <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
                         <div class="d-flex align-items-center gap-3">
@@ -32,6 +32,31 @@
                                 Add Parcela
                             </a>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Parte de filtrado y busquedad igual que en sensores -->
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <form th:action="@{/parcelas}" method="get" class="row g-3 align-items-end">
+                            <div class="col-sm-6 col-lg-4">
+                                <label for="q" class="form-label">Buscar</label>
+                                <input type="text" class="form-control" id="q" name="q" th:value="${q}" placeholder="Nombre de la parcela">
+                            </div>
+                            <div class="col-sm-4 col-lg-3">
+                                <label for="tipo" class="form-label">Tipo</label>
+                                <select class="form-control" id="tipo" name="tipo">
+                                    <option value="TODOS">Todos</option>
+                                    <option th:each="t : ${tipos}" th:value="${t}" th:text="${t}"
+                                            th:selected="${t.toString() == tipo}"></option>
+                                </select>
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-search me-1"></i>Buscar
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
 
@@ -104,7 +129,7 @@
                     </tr>
                     </tfoot>
                 </table>
-
+                </div>
             </div>
 
             <footer th:replace="~{fragments/layout :: footer}"></footer>
