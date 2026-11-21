@@ -87,7 +87,7 @@ public class SensorController {
     }
 
     @PostMapping()
-    public String saveSensor(@Valid Sensor sensor, BindingResult errors, Model model) {
+    public String saveSensor(@Valid @ModelAttribute("sensor") Sensor sensor, BindingResult errors, Model model) {
         if (errors.hasErrors()) {
             model.addAttribute("tipos", TipoSensor.values());
             return "sensores/formulario";
