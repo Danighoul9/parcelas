@@ -97,7 +97,7 @@ public class SensorController {
         return "redirect:/sensors";
     }
 
-    @GetMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public String deleteSensor(@PathVariable Long id) {
         sensorService.deleteSensorById(id);
         return "redirect:/sensors";

@@ -3,7 +3,7 @@ spring:
     name: parcelas
 
   datasource:
-    url: "${SPRING_DATASOURCE_URL:jdbc:mariadb://localhost:3307/ejemplo}" #El puerto cambia dependiendo donde tengas la base de datos alojada
+    url: "${SPRING_DATASOURCE_URL:jdbc:mariadb://localhost:3306/ejemplo}" #El puerto cambia dependiendo donde tengas la base de datos alojada
     username: "${SPRING_DATASOURCE_USERNAME:usuario}"
     password: "${SPRING_DATASOURCE_PASSWORD:usuario}"
 
