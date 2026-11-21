@@ -2,13 +2,11 @@ package com.daw.parcelas.controller;
 
 import com.daw.parcelas.model.Parcela;
 import com.daw.parcelas.model.TipoCultivo;
+import com.daw.parcelas.model.TipoSensor;
 import com.daw.parcelas.services.ParcelaServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/parcelas")
@@ -22,6 +20,9 @@ public class ParcelaController {
         this.parcelaService = parcelaService;
     }
 
+    /**
+     * Antiguo método listar, ahora se filtra por nombre y tipo de cultivo
+     *
     @GetMapping
     public String listar(Model model) {
         //Obtenemos todas las parcelas con ayuda del metodo .listarTodas() del servicio
@@ -33,6 +34,30 @@ public class ParcelaController {
         model.addAttribute("superficieTotal", parcelaService.calcularSuperficieTotal());
         return "parcelas/lista"; // → templates/parcelas/lista.html
     }
+     */
+
+    // Metodo listar actualizado para filtrar por nombre y tipo de cultivo
+    // Este es el que deberia de haber sido el extra 2 de filtrado en la anterior practica
+    // pero en su momento no supimos hacerlo
+    @GetMapping
+    public String listar(@RequestParam(required = false) String q,
+                         @RequestParam(required = false) String tipo, Model model) {
+        if (q == null) q = "";
+        if (tipo == null) tipo = "TODOS";
+
+        var parcelas = parcelaService.filtrarParcelasPorNombreYTipo(q, tipo);
+
+        //Pasárselos a la vista
+        model.addAttribute("parcelas", parcelas);
+        var tipos = TipoCultivo.values();
+        model.addAttribute("tipos", tipos);
+        model.addAttribute("q", q);
+        model.addAttribute("tipo", tipo);
+        model.addAttribute("superficieTotal", parcelaService.calcularSuperficieTotal());
+
+        return "parcelas/lista";
+    }
+
 
     @GetMapping("/{id}")
     public String detalle(@PathVariable Long id, Model model) {
@@ -64,14 +89,6 @@ public class ParcelaController {
         return "redirect:/parcelas"; // Redirigimos a la lista de parcelas después de eliminar
 
 
-    }
-
-    // EXTRA 2: Filtrar parcelas por tipo de cultivo
-    @GetMapping("/cultivo/{tipo}")
-    public String filtrarPorCultivo(@PathVariable TipoCultivo tipo, Model model) {
-        model.addAttribute("parcelas", parcelaService.filtrarPorCultivo(tipo));
-        model.addAttribute("superficieTotal", parcelaService.calcularSuperficieTotal());
-        return "parcelas/lista"; // → templates/parcelas/lista.html
     }
 
    //EXTRA 4: Editar parcela
