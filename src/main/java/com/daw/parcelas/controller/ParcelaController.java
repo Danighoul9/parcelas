@@ -4,8 +4,10 @@ import com.daw.parcelas.model.Parcela;
 import com.daw.parcelas.model.TipoCultivo;
 import com.daw.parcelas.model.TipoSensor;
 import com.daw.parcelas.services.ParcelaServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -63,7 +65,7 @@ public class ParcelaController {
     public String detalle(@PathVariable Long id, Model model) {
         //Obtenemos todas las parcelas con ayuda del metodo .buscarPorId() del servicio
         model.addAttribute("parcela", parcelaService.buscarPorId(id));
-        return "parcelas/detalle"; // → templates/parcelas/detalle.html (En este caso)
+        return "parcelas/detalle"; // → templates/parcelas/dGET /parcelas/nuevaGET /parcelas/nuevaGET /parcelas/nuevaGET /parcelas/nuevaPOST /parcelas/eliminar/2etalle.html (En este caso)
     }
 
     //PARTE DE MIRIAN GONZÁLEZ RODRÍGUEZ
@@ -75,11 +77,15 @@ public class ParcelaController {
         return "parcelas/formulario"; // → templates/parcelas/formulario.html
     }
 
-    @PostMapping()
-    public String guardar(Parcela parcela) {
-        //Guardamos la parcela con ayuda del metodo .guardar() del servicio
+    //Metodo para guardar una nueva parcela, con validaciones y redirección a la lista de parcelas
+    @PostMapping
+    public String guardar(@Valid @ModelAttribute("parcela") Parcela parcela, BindingResult errores,Model model) {
+        if (errores.hasErrors()) {
+            model.addAttribute("tipos", TipoCultivo.values());
+            return "parcelas/formulario";// Si hay errores, volvemos al formulario con los errores y los tipos de cultivo
+        }
         parcelaService.guardar(parcela);
-        return "redirect:/parcelas"; // Redirigimos a la lista de parcelas después de guardar
+        return "redirect:/parcelas";
     }
 
     @PostMapping("/eliminar/{id}")

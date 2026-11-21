@@ -32,6 +32,15 @@
                     <span th:unless="${parcela.id == null}">Editar parcela</span>
                 </h2>
 
+                <div class="estado-alarma"
+                     th:if="${#fields.hasErrors('*')}">
+                    <p th:each="error : ${#fields.errors('*')}"
+                       th:text="${error}">
+                        Error general
+                    </p>
+                    <!-- Muestra los errores de validación -->
+                </div>
+
                 <div class="mb-3 mt-6">
                     <label for="nombre" class="form-label">Nombre</label>
                     <!-- Hemos añadido form-control-lg para que el input sea mas grande y se vea mejor en todos -->
@@ -43,7 +52,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="superficie" class="form-label">Superficie</label>
-                    <input type="text" class="form-control form-control-lg" id="superficie" th:field="*{superficie}" required>
+                    <input type="number" class="form-control form-control-lg" id="superficie" th:field="*{superficie}" required>
                 </div>
                 <div class="mb-3">
                     <label for="tipoCultivo" class="form-label">Tipo de cultivo</label>
