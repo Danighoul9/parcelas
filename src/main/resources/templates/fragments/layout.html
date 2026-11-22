@@ -158,23 +158,21 @@
   </div>
 </div>
 
-<div th:fragment="mensajes"
-     th:if="${mensajeOk != null}"
-     class="alert agro-flash"
-     role="status">
-  <i class="bi bi-check-circle-fill"></i>
-  <span th:text="${mensajeOk}">Operación realizada correctamente</span>
-  <button type="button" class="btn-close" data-bs-dismiss="alert"
-          aria-label="Cerrar aviso"></button>
-</div>
-
 <footer th:fragment="footer" class="agro-footer">
   <span>AgroMonitor · CFGS Desarrollo de Aplicaciones Web ·
     <span th:text="${#temporals.year(#temporals.createToday())}">2026</span>
   </span>
 </footer>
 
-
+<!-- ============ Distintivo de calidad ============ -->
+<th:block th:fragment="distintivoCalidad(calidad)" th:switch="${calidad?.name()}">
+  <span th:case="'EXTRA'" class="badge text-bg-success">
+    <i class="bi bi-star-fill me-1"></i>Extra
+  </span>
+  <span th:case="'PRIMERA'" class="badge text-bg-primary">Primera</span>
+  <span th:case="'SEGUNDA'" class="badge text-bg-warning">Segunda</span>
+  <span th:case="*" class="badge text-bg-secondary">Sin calidad</span>
+</th:block>
 
 <!-- ============ Modal de eliminación ============ -->
 <div th:fragment="modalEliminar"

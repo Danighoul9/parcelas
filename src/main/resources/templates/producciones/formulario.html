@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Producciones')}">
+    <title>Producciones | AgroMonitor</title>
+</head>
+<body>
+
+<header th:replace="~{fragments/layout :: navbar}"></header>
+
+<div class="agro-shell">
+    <aside th:replace="~{fragments/layout :: sidebar('producciones')}"></aside>
+
+    <main class="agro-main" id="contenido">
+        <div class="agro-contenido">
+            <div th:replace="~{fragments/layout :: header-main('Producciones')}"></div>
+
+            <div class="row g-4">
+                <section th:with="hoy=${#temporals.format(#temporals.createToday(), 'yyyy-MM-dd')}"
+                         class="col-12">
+                    <form style="max-width: 500px;"
+                          class="form-panel mx-auto p-4 border rounded shadow-sm"
+                          th:action="@{/producciones}" th:object="${produccion}" method="post">
+
+                        <input type="hidden" th:field="*{id}">
+
+                        <h2 class="form-panel-title mb-4 p-2 rounded fw-bold">
+                            <span th:if="${produccion.id == null}">Nueva producción</span>
+                            <span th:unless="${produccion.id == null}">Editar producción</span>
+                        </h2>
+
+                        <div class="estado-alarma" th:if="${#fields.hasErrors('*')}">
+                            <p th:each="error : ${#fields.errors('*')}"
+                               th:text="${error}">
+                                Error general
+                            </p>
+                            <!-- Muestra los errores de validación -->
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="producto" class="form-label">Producto</label>
+                            <select id="producto" class="form-control form-control-lg" th:field="*{producto}" required>
+                                <option th:each="p : ${productos}" th:value="${p}" th:text="${p}"></option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="cantidadKg" class="form-label">Cantidad</label>
+                            <div class="input-group">
+                                <input type="number" id="cantidadKg" class="form-control form-control-lg" th:field="*{cantidadKg}" required>
+                                <span class="input-group-text">kg</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="fechaRecoleccion" class="form-label">Fecha de recolección</label>
+                            <input type="date" id="fechaRecoleccion" class="form-control form-control-lg" th:field="*{fechaRecoleccion}" th:max="${hoy}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label d-block">Calidad</label>
+                            <div class="form-check form-check-inline"
+                                 th:each="c : ${calidades}">
+                                <input type="radio" class="form-check-input" th:field="*{calidad}" th:value="${c}" required>
+
+                                <!-- th:for="${#ids.prev('calidad')}"
+                                    Significado: Enlaza cada etiqueta con su propio radio usando
+                                    el ID generado por Thymeleaf. -->
+                                <label class="form-check-label" th:for="${#ids.prev('calidad')}" th:text="${c.etiqueta}">
+                                    Extra
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-success mt-4">Guardar producción</button>
+                        <a th:href="@{/producciones}" class="btn btn-danger mt-4">Volver atrás</a>
+                    </form>
+                </section>
+            </div>
+
+            <footer th:replace="~{fragments/layout :: footer}"></footer>
+        </div>
+    </main>
+</div>
+
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

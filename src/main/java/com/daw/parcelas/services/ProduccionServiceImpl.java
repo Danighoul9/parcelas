@@ -1,6 +1,9 @@
 package com.daw.parcelas.services;
 
+import com.daw.parcelas.exceptions.RecursoNoEncontradoException;
+import com.daw.parcelas.model.Calidad;
 import com.daw.parcelas.model.Produccion;
+import com.daw.parcelas.model.Producto;
 import com.daw.parcelas.repository.ProduccionRepository;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +27,8 @@ public class ProduccionServiceImpl implements ProduccionService {
     @Override
     public Produccion buscarPorId(Long id) {
         return produccionRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new RecursoNoEncontradoException(
+                        "No existe la producción con id " + id));
     }
 
     @Override
@@ -36,4 +40,30 @@ public class ProduccionServiceImpl implements ProduccionService {
     public void eliminar(Long id) {
         produccionRepository.deleteById(id);
     }
+
+    @Override
+    public double calcularTotalKilos(List<Produccion> producciones) {
+        return producciones.stream()
+                .mapToDouble(Produccion::getCantidadKg)
+                .sum();
+    }
+
+    @Override
+    public List<Produccion> filtrarPorProductoYCalidad(String producto, String calidad) {
+
+        if ("TODOS".equals(producto) && "TODOS".equals(calidad)) {
+            return produccionRepository.findAllByOrderByFechaRecoleccionDesc();
+        } else if ("TODOS".equals(producto)) {
+            return produccionRepository.findByCalidadOrderByFechaRecoleccionDesc(Calidad.valueOf(calidad));
+        } else if ("TODOS".equals(calidad)) {
+            return produccionRepository.findByProductoOrderByFechaRecoleccionDesc(Producto.valueOf(producto));
+        } else {
+            return produccionRepository.findByProductoAndCalidadOrderByFechaRecoleccionDesc(
+                    Producto.valueOf(producto),
+                    Calidad.valueOf(calidad));
+        }
+
+
+    }
+
 }

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Detalle de producción')}">
+    <title>Detalle de producción | AgroMonitor</title>
+</head>
+
+<body>
+
+<header th:replace="~{fragments/layout :: navbar}"></header>
+
+<div class="agro-shell">
+    <aside th:replace="~{fragments/layout :: sidebar('producciones')}"></aside>
+
+    <main class="agro-main" id="contenido">
+        <div class="agro-contenido">
+
+            <div th:replace="~{fragments/layout :: header-main('Detalle de producción')}"></div>
+
+            <div class="card" style="max-width: 400px;">
+                <div class="card-header text-white">
+                    Información de la producción
+                </div>
+
+                <div class="card-body">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <h4 th:text="${produccion.getProducto().getEtiqueta()}" class="card-title text-success mb-0"></h4>
+
+                        <th:block th:replace="~{fragments/layout :: distintivoCalidad(${produccion.calidad})}"></th:block>
+                    </div>
+
+                    <p class="card-text mb-2">
+                        <strong>Cantidad:</strong>
+                        <span th:text="${produccion.cantidadKg}"></span> kg
+                    </p>
+
+                    <p class="card-text mb-4">
+                        <strong>Fecha:</strong>
+                        <span th:text="${#temporals.format(produccion.fechaRecoleccion, 'dd/MM/yyyy')}"></span>
+                    </p>
+
+                    <a th:href="@{/producciones}" class="btn btn-primary">
+                        Volver atrás
+                    </a>
+                </div>
+            </div>
+
+            <footer th:replace="~{fragments/layout :: footer}"></footer>
+        </div>
+    </main>
+</div>
+
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>
