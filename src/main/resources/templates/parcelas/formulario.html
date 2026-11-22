@@ -12,6 +12,8 @@
 
         <div class="row g-3">
 
+            <div th:replace="~{fragments/layout :: header-main('Parcelas')}"></div>
+
             <form style="max-width: 500px;"
                   class="form-panel mx-auto p-4 border rounded shadow-sm"
                   th:action="@{/parcelas}" th:object="${parcela}" th:method="post">
