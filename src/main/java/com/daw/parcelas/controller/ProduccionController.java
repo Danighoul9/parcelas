@@ -4,10 +4,13 @@ import com.daw.parcelas.model.Calidad;
 import com.daw.parcelas.model.Produccion;
 import com.daw.parcelas.model.Producto;
 import com.daw.parcelas.services.ProduccionServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -44,14 +47,24 @@ public class ProduccionController {
 
     @GetMapping("/nueva")
     public String nueva(Model model) {
-        model.addAttribute("produccion", new Produccion());
+        Produccion produccion = new Produccion();
+        produccion.setFechaRecoleccion(LocalDate.now());
+
+        model.addAttribute("produccion", produccion);
         model.addAttribute("productos", Producto.values());
         model.addAttribute("calidades", Calidad.values());
+
         return "producciones/formulario";
     }
-
     @PostMapping
-    public String guardar(@ModelAttribute("produccion") Produccion produccion) {
+    public String guardar(@Valid @ModelAttribute("produccion") Produccion produccion, BindingResult errores,
+                          Model model) {
+        if (errores.hasErrors()) {
+            model.addAttribute("productos", Producto.values());
+            model.addAttribute("calidades", Calidad.values());
+            return "producciones/formulario";
+        }
+
         produccionService.guardar(produccion);
         return "redirect:/producciones";
     }

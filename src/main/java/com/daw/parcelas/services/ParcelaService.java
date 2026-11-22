@@ -11,7 +11,7 @@ public interface ParcelaService {
     Parcela guardar(Parcela parcela);
     void eliminar(Long id);
     // EXTRA 1: Calcula la superficie total de todas las parcelas
-    double calcularSuperficieTotal();
+    double calcularSuperficieTotal(List<Parcela> parcelas);
 
     //EXTRA 2: Filtrar parcelas por tipo de cultivo
     List<Parcela> filtrarPorCultivo(TipoCultivo tipo);

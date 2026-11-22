@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout :: head('Panel')}">
+    <title>Panel | AgroMonitor</title>
+</head>
+
+<body>
+
+<header th:replace="~{fragments/layout :: navbar}"></header>
+
+<div class="agro-shell" >
+
+    <aside th:replace="~{fragments/layout :: sidebar('producciones')}"></aside>
+
+    <main class="agro-main" id="contenido">
+        <div class="agro-contenido">
+
+            <div th:replace="~{fragments/layout :: header-main('Panel de la explotación')}"></div>
+            <div class="row g-4">
+                <div class="col-12">
+                <div class="py-4">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+                        <div class="d-flex align-items-center gap-3">
+                            <h1 class="mb-0">Producciones</h1>
+                            <a th:href="@{/producciones/nueva}" class="btn btn-success" aria-label="Añadir produccion">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                </svg>
+                                Add Producción
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Parte de filtrado igual que en las otras vistas -->
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <form th:action="@{/producciones}" method="get" class="row g-3 align-items-end">
+
+                            <!-- Parte de filtrado para las producciones -->
+                            <div class="col-sm-6 col-lg-4">
+                                <label for="producto" class="form-label">Producto</label>
+                                <select class="form-control" id="producto" name="producto">
+                                    <option value="TODOS">Todos</option>
+                                    <option th:each="p : ${productos}" th:value="${p}" th:text="${p}"
+                                            th:selected="${p.toString() == producto}">
+                                    </option>
+                                </select>
+                            </div>
+
+                            <!-- Parte de filtrado para las Calidades -->
+                            <div class="col-sm-4 col-lg-3">
+                                <label for="calidad" class="form-label">Calidad</label>
+                                <select class="form-control" id="calidad" name="calidad">
+                                    <option value="TODOS">Todos</option>
+                                    <option th:each="c : ${calidades}" th:value="${c}" th:text="${c}"
+                                            th:selected="${c.toString() == calidad}">
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-search me-1"></i>Buscar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <table class="table table-hover align-middle mb-3 table-agro"
+                       style="table-layout: fixed;">
+                    <colgroup>
+                        <col style="width: 16%;">
+                        <col style="width: 20%;">
+                        <col style="width: 17%;">
+                        <col style="width: 16%;">
+                        <col style="width: 23%;">
+                    </colgroup>
+
+                    <thead class="table-success">
+                    <tr>
+                        <th>FECHA</th>
+                        <th>PRODUCTO</th>
+                        <th>CANTIDAD</th>
+                        <th>CALIDAD</th>
+                        <th>ACCIONES</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="produccion : ${producciones}">
+                        <td>
+                            <span th:text="${produccion.getFechaRecoleccion()}"></span>
+                        </td>
+                        <td>
+                            <a th:href="@{/producciones/{id}(id=${produccion.id})}"
+                               th:text="${produccion.getProducto().getEtiqueta()}"
+                               class="enlace-cultivo fw-semibold text-decoration-none"></a>
+                        </td>
+                        <td>
+                            <span th:text="${produccion.getCantidadKg()}"></span> kg
+                        </td>
+                        <td>
+                            <th:block th:replace="~{fragments/layout :: distintivoCalidad(${produccion.calidad})}"></th:block>
+                        </td>
+                        <td class="text-center">
+                            <a th:href="@{/producciones/{id}/editar(id=${produccion.id})}">
+                                <button type="button" class="btn btn-outline-warning btn-sm" aria-label="Editar produccion">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                         fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M12.854.146a.5.5 0 0 1 .707 0l2.293 2.293a.5.5 0 0 1 0 .707l-9.5 9.5a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232zM11.207 2.5 13.5 4.793 14.5 3.793 12.207 1.5zm1.586 3L10.5 3.207 3.354 10.354l-.5 2 2-.5z"/>
+                                    </svg>
+                                </button>
+                            </a>
+
+                            <!-- Botón de eliminar con modal -->
+                            <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalEliminar"
+                                    th:data-url="@{/producciones/eliminar/{id}(id=${produccion.id})}"
+                                    th:data-nombre="${produccion.getProducto().getEtiqueta()}"
+                                    aria-label="Eliminar produccion">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                     fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tfoot class="table-success">
+                    <tr>
+                        <td></td>
+                        <td class="fw-bold text-white">Número de producciones:</td>
+                        <td class="fw-bold text-white">
+                            <span th:text="${produccionesTotal}"></span>
+                        </td>
+                        <td class="fw-bold text-white">
+                            Total:
+                            <span th:text="${totalKilos}"></span> kg
+                        </td>
+                        <td></td>
+                    </tr>
+                    </tfoot>
+                </table>
+                </div>
+            </div>
+
+            <footer th:replace="~{fragments/layout :: footer}"></footer>
+
+        </div>
+    </main>
+
+</div>
+
+<!-- Modal de confirmación de eliminación con script proporcionado por el profesor -->
+<div th:replace="~{fragments/layout :: modalEliminar}"></div>
+<script>
+    const modalEliminar = document.getElementById("modalEliminar");
+
+    if (modalEliminar) {
+        modalEliminar.addEventListener("show.bs.modal", (evento) => {
+            const boton = evento.relatedTarget;
+
+            modalEliminar.querySelector("#modalEliminarForm").action =
+                boton.dataset.url;
+
+            modalEliminar.querySelector("#modalEliminarNombre").textContent =
+                boton.dataset.nombre;
+        });
+    }
+</script>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+
+</body>
+</html>

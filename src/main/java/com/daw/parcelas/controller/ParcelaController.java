@@ -2,7 +2,6 @@ package com.daw.parcelas.controller;
 
 import com.daw.parcelas.model.Parcela;
 import com.daw.parcelas.model.TipoCultivo;
-import com.daw.parcelas.model.TipoSensor;
 import com.daw.parcelas.services.ParcelaServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -55,8 +54,7 @@ public class ParcelaController {
         model.addAttribute("tipos", tipos);
         model.addAttribute("q", q);
         model.addAttribute("tipo", tipo);
-        model.addAttribute("superficieTotal", parcelaService.calcularSuperficieTotal());
-
+        model.addAttribute("superficieTotal", parcelaService.calcularSuperficieTotal(parcelas));
         return "parcelas/lista"; // → templates/parcelas/lista.html
     }
 
