@@ -20,6 +20,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark light">
+  <script>
+    const temaGuardado = localStorage.getItem('agromonitor-tema');
+    if (temaGuardado === 'light' || temaGuardado === 'dark') {
+      document.documentElement.setAttribute('data-bs-theme', temaGuardado);
+    }
+  </script>
   <title th:text="${titulo} + ' | AgroMonitor'">AgroMonitor</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,6 +60,11 @@
       </div>
 
       <div class="d-flex align-items-center gap-2">
+        <button class="btn-nav" id="cambiarTema" type="button"
+                aria-label="Activar modo claro" title="Activar modo claro" aria-pressed="false">
+          <i class="bi bi-sun icono-sol" aria-hidden="true"></i>
+          <i class="bi bi-moon icono-luna" aria-hidden="true"></i>
+        </button>
         <div class="dropdown">
           <button class="btn-nav btn-nav-avatar dropdown-toggle-split" type="button"
                   data-bs-toggle="dropdown" aria-expanded="false" aria-label="Menú de usuario">
@@ -212,6 +223,26 @@
 <!-- ============ SCRIPTS ============ -->
 <th:block th:fragment="scripts">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const botonTema = document.getElementById('cambiarTema');
+    if (botonTema) {
+      const actualizarBotonTema = () => {
+        const modoClaro = document.documentElement.getAttribute('data-bs-theme') === 'light';
+        const accion = modoClaro ? 'oscuro' : 'claro';
+        botonTema.setAttribute('aria-label', `Activar modo ${accion}`);
+        botonTema.setAttribute('title', `Activar modo ${accion}`);
+        botonTema.setAttribute('aria-pressed', modoClaro.toString());
+      };
+
+      actualizarBotonTema();
+      botonTema.addEventListener('click', () => {
+        const tema = document.documentElement.getAttribute('data-bs-theme') === 'light' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-bs-theme', tema);
+        localStorage.setItem('agromonitor-tema', tema);
+        actualizarBotonTema();
+      });
+    }
+  </script>
 </th:block>
 
 </body>

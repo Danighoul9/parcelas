@@ -31,6 +31,8 @@
   --agro-borde: #25372c;
   --agro-texto: #e7efe9;
   --agro-texto-suave: #94aa9b;
+  --agro-tarjeta-borde: #344b3b;
+  --agro-tarjeta-sombra: 0 .35rem 1rem rgba(0, 0, 0, .28);
 
   /* medidas y tipografía */
   --agro-navbar-h: 3.5rem;
@@ -41,9 +43,9 @@
 
 /* Tema claro (opcional, se activa con el botón de la navbar) */
 [data-bs-theme="light"] {
-  --agro-lima: #4f8a1f;
-  --agro-tierra: #a9731a;
-  --agro-agua: #1b7fa8;
+  --agro-lima: #3f7419;
+  --agro-tierra: #805300;
+  --agro-agua: #14627f;
   --agro-alerta: #c0392b;
   --agro-gris: #6b7f73;
 
@@ -53,6 +55,8 @@
   --agro-borde: #d3dfd4;
   --agro-texto: #14231a;
   --agro-texto-suave: #587063;
+  --agro-tarjeta-borde: #c5d6c7;
+  --agro-tarjeta-sombra: 0 .3rem .9rem rgba(31, 74, 39, .1);
 }
 
 /* Conecta los tokens con las variables de Bootstrap */
@@ -357,6 +361,19 @@ h1, h2, h3, h4, h5 {
 }
 .agro-card-head h2 { margin: 0; font-size: 1.05rem; font-weight: 700; }
 .agro-card-body { padding: 1.25rem; }
+
+.tarjeta-indicador {
+  background-color: var(--agro-superficie);
+  border: 1px solid var(--agro-tarjeta-borde);
+  border-radius: .85rem;
+  box-shadow: var(--agro-tarjeta-sombra);
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+.tarjeta-indicador:hover {
+  transform: translateY(-2px);
+  border-color: var(--agro-verde);
+  box-shadow: 0 .55rem 1.2rem rgba(0, 0, 0, .18);
+}
 
 .error-aviso {
   max-width: 520px;
@@ -851,4 +868,27 @@ h1, h2, h3, h4, h5 {
     animation: none !important;
     transition: none !important;
   }
+}
+
+/* ---------- MODO CLARO: contraste y legibilidad ---------- */
+[data-bs-theme="light"] {
+  --bs-link-color-rgb: 27, 94, 32;
+  --bs-link-hover-color-rgb: 21, 78, 35;
+}
+
+[data-bs-theme="light"] .table thead th {
+  color: var(--agro-texto);
+}
+
+[data-bs-theme="light"] .table-agro tfoot,
+[data-bs-theme="light"] .table-agro tfoot tr,
+[data-bs-theme="light"] .table-agro tfoot td,
+[data-bs-theme="light"] .table-agro tfoot th,
+[data-bs-theme="light"] .table-agro tfoot .text-white {
+  color: var(--agro-texto) !important;
+}
+
+[data-bs-theme="light"] .enlace-cultivo,
+[data-bs-theme="light"] .enlace-suave {
+  color: var(--agro-verde-oscuro);
 }
