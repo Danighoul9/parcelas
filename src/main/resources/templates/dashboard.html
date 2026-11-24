@@ -11,16 +11,22 @@
 
       <div class="agro-shell" >
 
-        <aside th:replace="~{fragments/layout :: sidebar('AQUI VA EL TÍTULO DEL PANEL')}"></aside>
+        <aside th:replace="~{fragments/layout :: sidebar('dashboard')}"></aside>
 
         <main class="agro-main" id="contenido">
           <div class="agro-contenido">
 
-            <div th:replace="~{fragments/layout :: header-main('Panel de la explotación')}"></div>
+            <div th:replace="~{fragments/layout :: header-main('Dashboard')}"></div>
 
-            <div class="row g-4">
+            <div class="row g-4" th:with="ha=${#numbers.formatDecimal(superficieTotal, 1, 'POINT', 2, 'COMMA')} + ' ha',
+                                          kg=${#numbers.formatDecimal(kilosTotales, 1, 'POINT', 2, 'COMMA')} + ' kg'">
 
-
+              <div th:replace="~{fragments/comunes :: tarjeta('Parcelas', ${totalParcelas}, 'bi-map', 'success')}"></div>
+              <div th:replace="~{fragments/comunes :: tarjeta('Superficie total', ${ha}, 'bi-bounding-box', 'primary')}"></div>
+              <div th:replace="~{fragments/comunes :: tarjeta('Kilos producidos', ${kg}, 'bi-basket3', 'warning')}"></div>
+              <div th:replace="~{fragments/comunes :: tarjeta('Calidad Extra', ${totalExtra}, 'bi-star', 'success')}"></div>
+              <div th:replace="~{fragments/comunes :: tarjeta('Calidad Primera', ${totalPrimera}, 'bi-award', 'primary')}"></div>
+              <div th:replace="~{fragments/comunes :: tarjeta('Calidad Segunda', ${totalSegunda}, 'bi-box', 'warning')}"></div>
 
             </div>
 

@@ -63,7 +63,15 @@ public class ProduccionServiceImpl implements ProduccionService {
                     Calidad.valueOf(calidad));
         }
 
+    }
+    @Override
+    public List<Produccion> ultimas() {
+        return produccionRepository.findTop5ByOrderByFechaRecoleccionDesc();
+    }
 
+    @Override
+    public long contarPorCalidad(Calidad calidad) {
+        return produccionRepository.countByCalidad(calidad);
     }
 
 }

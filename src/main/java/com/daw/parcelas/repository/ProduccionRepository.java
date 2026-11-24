@@ -12,4 +12,6 @@ public interface ProduccionRepository extends JpaRepository<Produccion, Long> {
     List<Produccion> findByProductoOrderByFechaRecoleccionDesc(Producto producto);
     List<Produccion> findByCalidadOrderByFechaRecoleccionDesc(Calidad calidad);
     List<Produccion> findByProductoAndCalidadOrderByFechaRecoleccionDesc(Producto producto, Calidad calidad);
+    long countByCalidad(Calidad calidad);
+    List<Produccion> findTop5ByOrderByFechaRecoleccionDesc();
 }

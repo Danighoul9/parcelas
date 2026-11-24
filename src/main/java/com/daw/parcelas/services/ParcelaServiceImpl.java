@@ -80,4 +80,10 @@ public class ParcelaServiceImpl implements ParcelaService {
             return ParcelaRepository.findAllByNombreContainingIgnoreCaseAndTipoCultivoEquals(nombre, TipoCultivo.valueOf(tipo));
         }
     }
+
+    // Método para contar el número total de parcelas
+    @Override
+    public long contar() {
+        return ParcelaRepository.count();
+    }
 }
