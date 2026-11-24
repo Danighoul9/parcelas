@@ -69,6 +69,12 @@ public class ProduccionController {
         return "redirect:/producciones";
     }
 
+    @GetMapping("/{id}")
+    public String detalle(@PathVariable Long id, Model model) {
+        model.addAttribute("produccion", produccionService.buscarPorId(id));
+        return "producciones/detalle";
+    }
+
     @PostMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Long id) {
         produccionService.eliminar(id);
