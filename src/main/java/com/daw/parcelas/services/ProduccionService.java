@@ -1,5 +1,6 @@
 package com.daw.parcelas.services;
 
+import com.daw.parcelas.model.Calidad;
 import com.daw.parcelas.model.Produccion;
 
 import java.util.List;
@@ -9,6 +10,9 @@ public interface ProduccionService {
     Produccion buscarPorId(Long id);
     Produccion guardar(Produccion produccion);
     void eliminar(Long id);
+    //
+    long contarPorCalidad(Calidad calidad);
+    List<Produccion> ultimas();
 
     //Metodo para calcular el total de kilos de una lista de producciones
     double calcularTotalKilos(List<Produccion> producciones);
